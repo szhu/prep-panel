@@ -1,0 +1,282 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      :root {
+        user-select: none;
+        color-scheme: light dark;
+        font: 13px -apple-system;
+
+        --text: #1a1a1a;
+        --text-dim: gray;
+        --background: #e5e5e5;
+        --fieldset-background: #e0e0e0;
+        --border: #dbdbdb;
+        --divider: #dbdbdb;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --background: #202020;
+          --text-dim: gray;
+          --fieldset-background: #222222;
+          --border: #2f2f2f;
+          --divider: #252525;
+          --text: #d6d6d6;
+        }
+      }
+
+      :root {
+        background: var(--background);
+        color: var(--text);
+      }
+
+      fieldset {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 2px 12px;
+        background: var(--fieldset-background);
+        margin-bottom: 20px;
+      }
+
+      header {
+        padding: 12px;
+        font-weight: bold;
+
+        position: sticky;
+        top: 0;
+        background: var(--background);
+      }
+
+      kbd {
+        font: inherit;
+      }
+
+      [type="run-shell"] {
+        display: none;
+      }
+
+      fieldset > label {
+        display: block;
+        padding: 10px 0;
+      }
+
+      fieldset > p {
+        margin: 0;
+        padding: 10px 0;
+      }
+
+      fieldset > * + * {
+        border-top: 2px solid var(--divider);
+      }
+
+      label:not([data-has-command]) > p:last-child::after {
+        content: " (Not implemented)";
+        color: var(--text-dim);
+      }
+
+      label:not([data-has-command]) {
+        pointer-events: none;
+      }
+
+      label > p {
+        margin: 0;
+      }
+
+      h1 {
+        padding: 0 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      async function runShellCommand(command) {
+        let response = await fetch("http://localhost:27370", {
+          method: "POST",
+          body: JSON.stringify({
+            action: "RunCommandV1",
+            shell: true,
+            command,
+          }),
+        });
+        let text = await response.text();
+        return JSON.parse(text);
+      }
+
+      function dedent(s) {
+        // debugger
+        let lines = s.split("\n");
+        if (lines[0].match(/^\s*$/)) {
+          lines.shift();
+        }
+        let indentation = lines[0].match(/^\s*/)[0];
+
+        return lines
+          .map((line) => {
+            if (line.slice(0, indentation.length) === indentation) {
+              return line.slice(indentation.length);
+            } else {
+              return line;
+            }
+          })
+          .join("\n");
+      }
+
+      document.addEventListener("click", async (e) => {
+        if (!e.target.matches(`button, input[type="checkbox"]`)) return;
+
+        let containerEl = e.target.closest(`label`);
+        if (containerEl == null) return;
+
+        let el = containerEl.querySelector(`[type="run-shell"]`);
+        if (el == null) return;
+
+        let shellCommand = dedent(el.innerText);
+        let result = await runShellCommand(shellCommand);
+
+        if (result.code === 0) {
+          e.target.checked = true;
+        } else {
+          e.target.style.outline = "1px dotted red";
+        }
+      });
+    </script>
+
+    <script type="markdown" src="/content.md"></script>
+
+    <script src="https://unpkg.com/commonmark@0.30.0/dist/commonmark.js"></script>
+    <script>
+      function replaceWrapper(oldEl, newEl) {
+        while (oldEl.childNodes.length > 0) {
+          newEl.append(oldEl.childNodes[0]);
+        }
+        oldEl.insertAdjacentElement("afterend", newEl);
+        oldEl.remove();
+        return newEl;
+      }
+
+      function unwrapEl(el) {
+        while (el.children.length > 0) {
+          el.insertAdjacentElement("beforebegin", el.children[0]);
+        }
+        el.remove();
+      }
+
+      function El(tag, attributes, ...children) {
+        let el = document.createElement(tag);
+        for (let key in attributes) {
+          el.setAttribute(key, attributes[key]);
+        }
+        for (let child of children) {
+          if (typeof child === "string") {
+            child = document.createTextNode(child);
+          }
+          el.appendChild(child);
+        }
+        return el;
+      }
+
+      for (let md of document.querySelectorAll(`[type=markdown]`)) {
+        processMd(md);
+      }
+
+      async function processMd(md) {
+        let text;
+        if (md.matches("[src]")) {
+          let response = await fetch(md.getAttribute("src"));
+          text = await response.text();
+        } else {
+          text = dedent(md.innerText);
+        }
+
+        var reader = new commonmark.Parser({ smart: true });
+        var writer = new commonmark.HtmlRenderer();
+        var parsed = reader.parse(text);
+        var result = writer.render(parsed);
+        let srcEl = document.createElement("body");
+        srcEl.innerHTML = result;
+
+        let dstEl = document.createElement("body");
+        {
+          for (let el of srcEl.querySelectorAll(":scope > ul, :scope > ol")) {
+            unwrapEl(el);
+          }
+
+          for (let el of srcEl.querySelectorAll(":scope > li")) {
+            el = replaceWrapper(el, document.createElement("label"));
+            for (let child of [...el.childNodes]) {
+              if (child instanceof Text && child.textContent.trim()) {
+                el.append(El("p", {}, child));
+              } else {
+                el.append(child);
+              }
+            }
+          }
+
+          for (let el of srcEl.querySelectorAll(
+            ":scope > label > p:first-child"
+          )) {
+            el.insertAdjacentElement("afterbegin", El("span", {}, " "));
+            el.insertAdjacentElement(
+              "afterbegin",
+              El("input", {
+                type: "checkbox",
+                onclick: "this.checked=false",
+              })
+            );
+          }
+
+          for (let el of srcEl.querySelectorAll(":scope > label button")) {
+            el.type = "button";
+            let label = el.closest("label");
+            for (let checkbox of label.querySelectorAll("input")) {
+              checkbox.remove();
+            }
+          }
+
+          for (let el of srcEl.querySelectorAll(":scope > h2")) {
+            replaceWrapper(el, document.createElement("header"));
+          }
+
+          for (let el of srcEl.querySelectorAll("pre")) {
+            el.setAttribute("type", "run-shell");
+            let label = el.closest("label");
+            if (label != null) {
+              label.setAttribute("data-has-command", "");
+            }
+          }
+
+          for (let el of srcEl.querySelectorAll("kbd")) {
+            el.innerText = el.innerText
+              .replace(/@/g, "⌘")
+              .replace(/~/g, "⌥")
+              .replace(/\$/g, "⇧")
+              .replace(/\^/g, "⌃")
+              .replace(/\bSpc\b/g, "⎵");
+          }
+
+          while (srcEl.childElementCount > 0) {
+            let el = srcEl.firstElementChild;
+            el.remove();
+            if (el.matches("header")) {
+              dstEl.append(el);
+              let fieldset = document.createElement("fieldset");
+              dstEl.append(fieldset);
+            } else {
+              let fieldset = dstEl.querySelector(":scope > *:last-child");
+              if (fieldset != null && fieldset.matches("fieldset")) {
+                fieldset.append(el);
+              } else {
+                dstEl.append(el);
+              }
+            }
+          }
+
+          while (dstEl.childElementCount > 0) {
+            md.insertAdjacentElement("afterend", dstEl.lastElementChild);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
