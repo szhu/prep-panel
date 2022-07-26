@@ -149,15 +149,15 @@ These settings are not accurate.
 - Mouse: Install [Mos](https://mos.caldis.me/) (smooth scrolling)
 
   ```sh
-  brew install --cask mos
-  open /Applications/Mos.app
+  brew install --cask "mos"
+  open "/Applications/Mos.app"
   ```
 
 - Mouse: Install Middleclick (triple-tap to middle-click)
 
   ```sh
-  brew install --cask middleclick
-  open /Applications/MiddleClick.app
+  brew install --cask "middleclick"
+  open "/Applications/MiddleClick.app"
   ```
 
 ## Text
@@ -287,7 +287,7 @@ These settings are not accurate.
 - Install [GitUp](https://gitup.co/)
 
   ```sh
-  brew install --cask gitup
+  brew install --cask "gitup"
   ```
 
 - Log into GitHub using `gh`
@@ -296,11 +296,35 @@ These settings are not accurate.
   gh auth login
   ```
 
+- Set up a global gitignore, ignoring `.DS_Store` files
+
+  ```sh
+  set -e
+  echo '.DS_Store' > ~/.gitignore
+  git config --global core.excludesfile ~/.gitignore
+  ```
+
+## Work
+
+- Install Google Chrome
+
+  ```sh
+  brew install --cask "google-chrome"
+  open "/Applications/Google Chrome.app"
+  ```
+
+- Install Zoom
+
+  ```sh
+  brew install --cask "zoom"
+  open "/Applications/zoom.us.app"
+  ```
+
 ## Play
 
 - Install Spotify
 
   ```sh
-  brew install --cask spotify
-  open /Applications/Spotify.app
+  brew install --cask "spotify"
+  open "/Applications/Spotify.app"
   ```
