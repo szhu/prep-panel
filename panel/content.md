@@ -82,6 +82,8 @@
 
 ## Appearance
 
+- Set black wallpaper
+
 - Change accent color to blue
 
   ```sh
@@ -138,6 +140,19 @@ These settings are not accurate.
   open "/System/Library/PreferencePanes/Keyboard.prefPane"
   ```
 
+- Mouse: Install [Mos](https://mos.caldis.me/)
+
+  ```sh
+  brew install --cask mos
+  open /Applications/Mos.app
+  ```
+
+## Text
+
+- Turn off auto-capitalization
+
+- Turn off smart quotes
+
 ## Shortcuts & Gestures
 
 - <kbd>@~Y</kbd> for Merge Windows
@@ -152,7 +167,7 @@ These settings are not accurate.
 
 - Remove "US Holidays" Calendar
 
-## Third-party Apps
+## Homebrew
 
 - Install Homebrew
 
@@ -160,10 +175,32 @@ These settings are not accurate.
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   ```
 
+## Dev tooling
+
 - Install Visual Studio Code
 
   ```sh
   brew install visual-studio-code
+  ```
+
+- Install fish shell
+
+  ```sh
+  brew install fish
+  ```
+
+- Set fish shell to be the default
+
+- Install Deno
+
+  ```sh
+  brew install deno
+  ```
+
+- Install Node
+
+  ```sh
+  brew install node
   ```
 
 ## Git
@@ -174,10 +211,15 @@ These settings are not accurate.
   git config --global user.name "$(id -F)"
   ```
 
-- Install `gh` and GitUp
+- Install `gh`
 
   ```sh
   brew install gh
+  ```
+
+- Install [GitUp](https://gitup.co/)
+
+  ```sh
   brew install --cask gitup
   ```
 
@@ -185,4 +227,13 @@ These settings are not accurate.
 
   ```sh
   gh auth login
+  ```
+
+## Play
+
+- Install Spotify
+
+  ```sh
+  brew install --cask spotify
+  open /Applications/Spotify.app
   ```
