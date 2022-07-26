@@ -8,6 +8,12 @@
   defaults write "com.apple.finder" "QuitMenuItem" -bool true
   ```
 
+- Hide desktop
+
+  ```sh
+  defaults write "com.apple.finder" "CreateDesktop" -bool false
+  ```
+
 - Hide tags in sidebar
 
   ```sh
@@ -140,11 +146,18 @@ These settings are not accurate.
   open "/System/Library/PreferencePanes/Keyboard.prefPane"
   ```
 
-- Mouse: Install [Mos](https://mos.caldis.me/)
+- Mouse: Install [Mos](https://mos.caldis.me/) (smooth scrolling)
 
   ```sh
   brew install --cask mos
   open /Applications/Mos.app
+  ```
+
+- Mouse: Install Middleclick (triple-tap to middle-click)
+
+  ```sh
+  brew install --cask middleclick
+  open /Applications/MiddleClick.app
   ```
 
 ## Text
@@ -152,6 +165,10 @@ These settings are not accurate.
 - Turn off auto-capitalization
 
 - Turn off smart quotes
+
+- Turn off double-space to period shortcut
+
+- Hold down to repeat
 
 ## Shortcuts & Gestures
 
@@ -162,6 +179,49 @@ These settings are not accurate.
 - <kbd>@$S</kbd> Back, <kbd>$@D</kbd> Forward
 
 - <kbd>^Spc</kbd> Show/Exit Tab Overview
+
+- <kbd>^$Click</kbd> anywhere to move window
+  [[?](https://apple.stackexchange.com/a/365860)]
+
+  ```sh
+  defaults write "NSGlobalDomain" "NSWindowShouldDragOnGesture" -bool true
+  ```
+
+- <kbd>^Right Click</kbd> for Mission Control
+
+  ```sh
+  defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add \
+    38 '
+      <dict>
+        <key>enabled</key><true/>
+        <key>value</key><dict>
+          <key>type</key><string>button</string>
+          <key>parameters</key>
+          <array>
+            <integer>2</integer>
+            <integer>2</integer>
+            <integer>1048576</integer>
+          </array>
+        </dict>
+      </dict>
+    '  \
+    40 '
+      <dict>
+        <key>enabled</key><true/>
+        <key>value</key><dict>
+          <key>type</key><string>button</string>
+          <key>parameters</key>
+          <array>
+            <integer>2</integer>
+            <integer>2</integer>
+            <integer>1179648</integer>
+          </array>
+        </dict>
+      </dict>
+    '
+  # https://zameermanji.com/blog/2021/6/8/applying-com-apple-symbolichotkeys-changes-instantaneously/
+  /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+  ```
 
 ## Calendar
 
@@ -187,6 +247,7 @@ These settings are not accurate.
 
   ```sh
   brew install fish
+  echo 'eval (/opt/homebrew/bin/brew shellenv)' > ~/.config/fish/conf.d/homebrew.fish
   ```
 
 - Set fish shell to be the default
@@ -202,6 +263,12 @@ These settings are not accurate.
   ```sh
   brew install node
   ```
+
+## Terminal
+
+- useOptionAsMetaKey
+
+- single-line, blinking cursor
 
 ## Git
 
