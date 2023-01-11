@@ -94,7 +94,12 @@
     </style>
   </head>
   <body>
+    <script src="https://unpkg.com/commonmark@0.30.0/dist/commonmark.js"></script>
+    <script type="markdown" src="/content.md"></script>
     <script>
+      /**
+       * Tell the server to run a shell command.
+       */
       async function runShellCommand(command) {
         let response = await fetch("http://localhost:27370", {
           method: "POST",
@@ -108,6 +113,9 @@
         return JSON.parse(text);
       }
 
+      /**
+       * Dedent each line to the indentation of the first line.
+       */
       function dedent(s) {
         // debugger
         let lines = s.split("\n");
@@ -145,12 +153,10 @@
           e.target.style.outline = "1px dotted red";
         }
       });
-    </script>
 
-    <script type="markdown" src="/content.md"></script>
-
-    <script src="https://unpkg.com/commonmark@0.30.0/dist/commonmark.js"></script>
-    <script>
+      /**
+       * Replace element with another, keeping all children.
+       */
       function replaceWrapper(oldEl, newEl) {
         while (oldEl.childNodes.length > 0) {
           newEl.append(oldEl.childNodes[0]);
@@ -160,6 +166,9 @@
         return newEl;
       }
 
+      /**
+       * Replace element with its children.
+       */
       function unwrapEl(el) {
         while (el.children.length > 0) {
           el.insertAdjacentElement("beforebegin", el.children[0]);
@@ -167,6 +176,9 @@
         el.remove();
       }
 
+      /**
+       * Shorthand for creating an element.
+       */
       function El(tag, attributes, ...children) {
         let el = document.createElement(tag);
         for (let key in attributes) {
@@ -181,10 +193,9 @@
         return el;
       }
 
-      for (let md of document.querySelectorAll(`[type=markdown]`)) {
-        processMd(md);
-      }
-
+      /**
+       * Process a region of markdown text.
+       */
       async function processMd(md) {
         let text;
         if (md.matches("[src]")) {
@@ -194,6 +205,7 @@
           text = dedent(md.innerText);
         }
 
+        // Render to markdown.
         var reader = new commonmark.Parser({ smart: true });
         var writer = new commonmark.HtmlRenderer();
         var parsed = reader.parse(text);
@@ -201,15 +213,19 @@
         let srcEl = document.createElement("body");
         srcEl.innerHTML = result;
 
+        // Transform output HTML.
         let dstEl = document.createElement("body");
         {
+          // Remove the <ul>/<ol> surrounding list items.
           for (let el of srcEl.querySelectorAll(":scope > ul, :scope > ol")) {
             unwrapEl(el);
           }
 
           for (let el of srcEl.querySelectorAll(":scope > li")) {
+            // Replace <li> with <label>.
             el = replaceWrapper(el, document.createElement("label"));
             for (let child of [...el.childNodes]) {
+              // Surround the list item contents with <p>.
               if (child instanceof Text && child.textContent.trim()) {
                 el.append(El("p", {}, child));
               } else {
@@ -218,10 +234,14 @@
             }
           }
 
+          // Add a checkbox to each <label> item.
           for (let el of srcEl.querySelectorAll(
             ":scope > label > p:first-child"
           )) {
+            // Add spacer after checkbox.
             el.insertAdjacentElement("afterbegin", El("span", {}, " "));
+
+            // Add checkbox.
             el.insertAdjacentElement(
               "afterbegin",
               El("input", {
@@ -231,6 +251,8 @@
             );
           }
 
+          // If the list item has a <button>, remove the checkbox. (The user
+          // will click the button instead of the checkbox.)
           for (let el of srcEl.querySelectorAll(":scope > label button")) {
             el.type = "button";
             let label = el.closest("label");
@@ -239,10 +261,12 @@
             }
           }
 
+          // Replace <h2> with <header>.
           for (let el of srcEl.querySelectorAll(":scope > h2")) {
             replaceWrapper(el, document.createElement("header"));
           }
 
+          // Add "type" attribute to <pre> elements.
           for (let el of srcEl.querySelectorAll("pre")) {
             el.setAttribute("type", "run-shell");
             let label = el.closest("label");
@@ -251,6 +275,7 @@
             }
           }
 
+          // Replace modifier shorthands in <kbd> with their symbols.
           for (let el of srcEl.querySelectorAll("kbd")) {
             el.innerText = el.innerText
               .replace(/@/g, "⌘")
@@ -260,6 +285,7 @@
               .replace(/\bSpc\b/g, "⎵");
           }
 
+          // Add <fieldset> around sections delineated by <header>.
           while (srcEl.childElementCount > 0) {
             let el = srcEl.firstElementChild;
             el.remove();
@@ -276,11 +302,16 @@
               }
             }
           }
-
-          while (dstEl.childElementCount > 0) {
-            md.insertAdjacentElement("afterend", dstEl.lastElementChild);
-          }
         }
+
+        // Insert into `md`.
+        while (dstEl.childElementCount > 0) {
+          md.insertAdjacentElement("afterend", dstEl.lastElementChild);
+        }
+      }
+
+      for (let md of document.querySelectorAll(`[type=markdown]`)) {
+        processMd(md);
       }
     </script>
   </body>
