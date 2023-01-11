@@ -62,7 +62,7 @@
 
 ## Dock
 
-- Remove default items
+- <button>Clear all apps</button>
 
   ```sh
   defaults delete "com.apple.Dock" "persistent-apps"
@@ -160,6 +160,12 @@ These settings are not accurate.
   open "/Applications/MiddleClick.app"
   ```
 
+- Keyboard: Hold to repeat
+
+  ```sh
+  defaults write "NSGlobalDomain" "ApplePressAndHoldEnabled" -bool NO
+  ```
+
 ## Text
 
 - Turn off auto-capitalization
@@ -172,6 +178,15 @@ These settings are not accurate.
 
 ## Shortcuts & Gestures
 
+- <button>Reset all global custom keyboard shortcuts</button>
+
+  ```sh
+  defaults delete "NSGlobalDomain" "NSUserKeyEquivalents"
+  ```
+
+Note: There is still an error with escaping some of the characters in these, and
+they don't work via the script yet.
+
 - <kbd>@~Y</kbd> for Merge Windows
 
 - <kbd>@$V</kbd> for Paste and Match Style
@@ -180,14 +195,83 @@ These settings are not accurate.
 
 - <kbd>^Spc</kbd> Show/Exit Tab Overview
 
-- <kbd>^$Click</kbd> anywhere to move window
-  [[?](https://apple.stackexchange.com/a/365860)]
+- Edit Menu
+
+  ```sh
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Edit\033Paste and Match Style" "@\$v";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Edit\033Emoji & Symbols" "^$ ";
+  ```
+
+- Tab Overview
+
+  ```sh
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Exit Tab Overview" "^\`";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Show Tab Overview" "^\`";
+  ```
+
+- Left-hand-only shortcuts for back/forward
+
+  ```sh
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Go\033Back" "@\$s";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Go\033Forward" "@\$d";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033History\033Back" "@\$s";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033History\033Forward" "@\$d";
+  # Prevents Safari's default shortcut from overriding it
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Bookmarks\033Bookmark All Tabs…" "@~\$d";
+
+  ```
+
+- Merge Windows
+
+  ```sh
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Merge All Windows" "@\$y";
+  ```
+
+- Spectable/Rectangle-like shortcuts for the Window menu
+
+  ```sh
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move Window to Left Side of Screen" "~^\\[";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move Window to Right Side of Screen" "~^\\]";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Tile Window to Left of Screen" "~^$\\[";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Tile Window to Right of Screen" "~^$\\]";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Revert" "~^\\'";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Zoom All" "~^$=";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Zoom" "~^=";
+  ```
+
+- Safari
+
+  ```sh
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033File\033Export To\033PDF…" "@\$e";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Develop\033Show Snippet Editor" "@~\\U00a9";
+  ```
+
+- Keynote, Numbers, Pages
+
+  ```sh
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Format\033Font\033Strikethrough" "@\$x";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Format\033Font\033Bigger" "@\$.";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Format\033Font\033Smaller" "@\$,";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Zoom\033Zoom In" "@=";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Zoom\033Zoom Out" "@-";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Arrange\033Align Objects\033Left" "@~[";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Arrange\033Align Objects\033Top" "@~,";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Insert\033Line\033Straight Connection Line" "@l";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Insert\033Shape\033Rectangle" "@r";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Insert\033Shape\033Rounded Rectangle" "@\$r";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Insert\033Text Box" "@↩";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Inspector\033Hide Inspector" "@\\\\";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Inspector\033Show Inspector" "@\\\\";
+  ```
+
+- <kbd>^$</kbd>-click anywhere in a window to move it
+  [[?]](https://apple.stackexchange.com/a/365860)
 
   ```sh
   defaults write "NSGlobalDomain" "NSWindowShouldDragOnGesture" -bool true
   ```
 
-- <kbd>^Right Click</kbd> for Mission Control
+- <kbd>^</kbd>-Right-click for Mission Control
 
   ```sh
   defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add \
@@ -278,16 +362,22 @@ These settings are not accurate.
   git config --global user.name "$(id -F)"
   ```
 
-- Install `gh`
+- Change default branch name to `main`
 
   ```sh
-  brew install gh
+  git config --global init.defaultBranch main
   ```
 
 - Install [GitUp](https://gitup.co/)
 
   ```sh
   brew install --cask "gitup"
+  ```
+
+- Install `gh`
+
+  ```sh
+  brew install gh
   ```
 
 - Log into GitHub using `gh`

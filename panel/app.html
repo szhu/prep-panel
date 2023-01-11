@@ -49,6 +49,9 @@
         background: var(--background);
       }
 
+      table {
+        font: inherit;
+      }
       kbd {
         font: inherit;
       }
@@ -57,7 +60,7 @@
         display: none;
       }
 
-      fieldset > label {
+      fieldset > section {
         display: block;
         padding: 10px 0;
       }
@@ -71,16 +74,20 @@
         border-top: 2px solid var(--divider);
       }
 
-      label:not([data-has-command]) > p:last-child::after {
+      section:not([data-has-command]) > p > input[type="checkbox"] {
+        visibility: hidden;
+      }
+
+      section:not([data-has-command]) > p:last-child::after {
         content: " (Not implemented)";
         color: var(--text-dim);
       }
 
-      label:not([data-has-command]) {
+      section:not([data-has-command]) {
         pointer-events: none;
       }
 
-      label > p {
+      section > p {
         margin: 0;
       }
 
@@ -94,7 +101,8 @@
     </style>
   </head>
   <body>
-    <script src="https://unpkg.com/commonmark@0.30.0/dist/commonmark.js"></script>
+    <!-- <script src="https://unpkg.com/commonmark@0.30.0/dist/commonmark.js"></script> -->
+    <script src="https://spec.commonmark.org/dingus/commonmark.js"></script>
     <script type="markdown" src="/content.md"></script>
     <script>
       /**
@@ -138,7 +146,7 @@
       document.addEventListener("click", async (e) => {
         if (!e.target.matches(`button, input[type="checkbox"]`)) return;
 
-        let containerEl = e.target.closest(`label`);
+        let containerEl = e.target.closest(`section`);
         if (containerEl == null) return;
 
         let el = containerEl.querySelector(`[type="run-shell"]`);
@@ -222,8 +230,8 @@
           }
 
           for (let el of srcEl.querySelectorAll(":scope > li")) {
-            // Replace <li> with <label>.
-            el = replaceWrapper(el, document.createElement("label"));
+            // Replace <li> with <section>.
+            el = replaceWrapper(el, document.createElement("section"));
             for (let child of [...el.childNodes]) {
               // Surround the list item contents with <p>.
               if (child instanceof Text && child.textContent.trim()) {
@@ -234,9 +242,9 @@
             }
           }
 
-          // Add a checkbox to each <label> item.
+          // Add a checkbox to each <section> item.
           for (let el of srcEl.querySelectorAll(
-            ":scope > label > p:first-child"
+            ":scope > section > p:first-child"
           )) {
             // Add spacer after checkbox.
             el.insertAdjacentElement("afterbegin", El("span", {}, " "));
@@ -253,10 +261,10 @@
 
           // If the list item has a <button>, remove the checkbox. (The user
           // will click the button instead of the checkbox.)
-          for (let el of srcEl.querySelectorAll(":scope > label button")) {
+          for (let el of srcEl.querySelectorAll(":scope > section button")) {
             el.type = "button";
-            let label = el.closest("label");
-            for (let checkbox of label.querySelectorAll("input")) {
+            let section = el.closest("section");
+            for (let checkbox of section.querySelectorAll("input")) {
               checkbox.remove();
             }
           }
@@ -269,9 +277,51 @@
           // Add "type" attribute to <pre> elements.
           for (let el of srcEl.querySelectorAll("pre")) {
             el.setAttribute("type", "run-shell");
-            let label = el.closest("label");
-            if (label != null) {
-              label.setAttribute("data-has-command", "");
+            let section = el.closest("section");
+            if (section != null) {
+              section.setAttribute("data-has-command", "");
+            }
+          }
+
+          for (let pre of srcEl.querySelectorAll("pre")) {
+            let p = pre.closest("section")?.querySelector("p");
+            if (p == null) continue;
+
+            let tbody;
+            let table = El("table", {}, (tbody = El("tbody")));
+            p.append(table);
+
+            for (let line of pre.innerText.split("\n")) {
+              let m = line
+                .trim()
+                .match(
+                  /^defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "([^"]+)" "([^"]+)";$/
+                );
+
+              if (m == null) continue;
+              let menuParts = m[1].split("\\033").filter(Boolean);
+              let menuRepr = menuParts.join(" → ");
+
+              table.append(
+                El(
+                  //
+                  "tr",
+                  {},
+                  El("td", {}, menuRepr),
+                  El(
+                    "td",
+                    {},
+                    El(
+                      "kbd",
+                      {},
+                      m[2]
+                        //
+                        .replace(/\\(.)/g, "$1")
+                        .replace(/\\\\/g, "\\")
+                    )
+                  )
+                )
+              );
             }
           }
 
@@ -282,7 +332,9 @@
               .replace(/~/g, "⌥")
               .replace(/\$/g, "⇧")
               .replace(/\^/g, "⌃")
-              .replace(/\bSpc\b/g, "⎵");
+              .replace(/\bSpc\b/g, "⎵")
+              .replace(/ /g, "⎵")
+              .toUpperCase();
           }
 
           // Add <fieldset> around sections delineated by <header>.
