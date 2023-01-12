@@ -73,13 +73,11 @@
 
       fieldset > section {
         display: flex;
-        padding: 10px 0;
         gap: 0.3em;
       }
 
       fieldset p {
-        margin: 0;
-        padding: 0.5em 0;
+        margin: 0.5em 0;
       }
 
       fieldset > * + * {
@@ -97,10 +95,6 @@
 
       section:not([data-has-command]) {
         pointer-events: none;
-      }
-
-      section > p {
-        margin: 0;
       }
 
       h1 {
@@ -356,8 +350,8 @@
 
             let tbody;
             let table = El(
-              { tag: "table", cellspacing: "0" },
-              (tbody = El("tbody"))
+              "p",
+              El({ tag: "table", cellspacing: "0" }, (tbody = El("tbody")))
             );
 
             for (let line of pre.innerText.split("\n")) {
@@ -414,22 +408,19 @@
                       "tr",
                       El(
                         { tag: "td", colspan: "3" },
+                        "Install ",
                         El(
-                          "p",
-                          "Install ",
-                          El(
-                            {
-                              tag: "a",
-                              isCask,
-                              href: isCask
-                                ? `https://formulae.brew.sh/cask/${appId}`
-                                : `https://formulae.brew.sh/formula/${appId}`,
-                              target: "_blank",
-                            },
-                            appName ?? appId
-                          ),
-                          appComment ? ` (${appComment})` : ""
-                        )
+                          {
+                            tag: "a",
+                            isCask,
+                            href: isCask
+                              ? `https://formulae.brew.sh/cask/${appId}`
+                              : `https://formulae.brew.sh/formula/${appId}`,
+                            target: "_blank",
+                          },
+                          appName ?? appId
+                        ),
+                        appComment ? ` (${appComment})` : ""
                       )
                     )
                   );
