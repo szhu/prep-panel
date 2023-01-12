@@ -146,17 +146,13 @@ These settings are not accurate.
   open "/System/Library/PreferencePanes/Keyboard.prefPane"
   ```
 
-- Mouse: Install [Mos](https://mos.caldis.me/) (smooth scrolling)
-
-  ```sh
-  brew install --cask "mos"
+- ```sh
+  brew install --cask "mos" # Mos (smooth scrolling)
   open "/Applications/Mos.app"
   ```
 
-- Mouse: Install Middleclick (triple-tap to middle-click)
-
-  ```sh
-  brew install --cask "middleclick"
+- ```sh
+  brew install --cask "middleclick" # Middleclick (triple-tap to middle-click)
   open "/Applications/MiddleClick.app"
   ```
 
@@ -364,30 +360,22 @@ These settings are not accurate.
 
 ## Dev tooling
 
-- Install Visual Studio Code
-
-  ```sh
-  brew install visual-studio-code
+- ```sh
+  brew install --cask visual-studio-code # Visual Studio Code
   ```
 
-- Install fish shell
-
-  ```sh
-  brew install fish
+- ```sh
+  brew install fish # fish shell
   echo 'eval (/opt/homebrew/bin/brew shellenv)' > ~/.config/fish/conf.d/homebrew.fish
   ```
 
 - Set fish shell to be the default
 
-- Install Deno
-
-  ```sh
+- ```sh
   brew install deno
   ```
 
-- Install Node
-
-  ```sh
+- ```sh
   brew install node
   ```
 
@@ -411,15 +399,11 @@ These settings are not accurate.
   git config --global init.defaultBranch main
   ```
 
-- Install [GitUp](https://gitup.co/)
-
-  ```sh
-  brew install --cask "gitup"
+- ```sh
+  brew install --cask gitup
   ```
 
-- Install `gh`
-
-  ```sh
+- ```sh
   brew install gh
   ```
 
@@ -432,32 +416,25 @@ These settings are not accurate.
 - Set up a global gitignore, ignoring `.DS_Store` files
 
   ```sh
-  set -e
   echo '.DS_Store' > ~/.gitignore
   git config --global core.excludesfile ~/.gitignore
   ```
 
 ## Work
 
-- Install Google Chrome
-
-  ```sh
-  brew install --cask "google-chrome"
+- ```sh
+  brew install --cask "google-chrome" # Google Chrome
   open "/Applications/Google Chrome.app"
   ```
 
-- Install Zoom
-
-  ```sh
-  brew install --cask "zoom"
+- ```sh
+  brew install --cask "zoom" # Zoom
   open "/Applications/zoom.us.app"
   ```
 
 ## Play
 
-- Install Spotify
-
-  ```sh
-  brew install --cask "spotify"
+- ```sh
+  brew install --cask "spotify" # Spotify
   open "/Applications/Spotify.app"
   ```

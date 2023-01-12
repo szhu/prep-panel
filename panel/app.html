@@ -51,11 +51,12 @@
       }
 
       table {
-        margin: 0.5em 1.3em;
+        /* margin: 0.5em 0; */
         font: inherit;
         border-collapse: separate;
       }
       td {
+        padding: 0;
         height: 0.5em;
       }
       tr > td + td {
@@ -71,24 +72,25 @@
       }
 
       fieldset > section {
-        display: block;
+        display: flex;
         padding: 10px 0;
+        gap: 0.3em;
       }
 
-      fieldset > p {
+      fieldset p {
         margin: 0;
-        padding: 10px 0;
+        padding: 0.5em 0;
       }
 
       fieldset > * + * {
         border-top: 2px solid var(--divider);
       }
 
-      section:not([data-has-command]) > p > input[type="checkbox"] {
+      section:not([data-has-command]) > .checkbox > p > input[type="checkbox"] {
         visibility: hidden;
       }
 
-      section:not([data-has-command]) > p:last-child::after {
+      section:not([data-has-command]) > .contents > p:last-child::after {
         content: " (Not implemented)";
         color: var(--text-dim);
       }
@@ -217,6 +219,17 @@
       }
 
       /**
+       * Wrap the children of an element with another element.
+       */
+      function lineEl(containerEl, linerEl) {
+        while (containerEl.childNodes.length > 0) {
+          linerEl.append(containerEl.childNodes[0]);
+        }
+        containerEl.append(linerEl);
+        return linerEl;
+      }
+
+      /**
        * Replace element with its children.
        */
       function unwrapEl(el) {
@@ -294,20 +307,19 @@
           }
 
           // Add a checkbox to each <section> item.
-          for (let el of srcEl.querySelectorAll(
-            ":scope > section > p:first-child"
-          )) {
-            // Add spacer after checkbox.
-            el.insertAdjacentElement("afterbegin", El("span", " "));
+          for (let section of srcEl.querySelectorAll(":scope > section")) {
+            let sectionContents = lineEl(
+              section,
+              El({ tag: "div", class: "contents" })
+            );
 
             // Add checkbox.
-            el.insertAdjacentElement(
-              "afterbegin",
-              El({
-                tag: "input",
-                type: "checkbox",
-                onclick: "this.checked=false",
-              })
+            sectionContents.insertAdjacentElement(
+              "beforebegin",
+              El(
+                { tag: "div", class: "checkbox" },
+                El("p", El({ tag: "input", type: "checkbox" }))
+              )
             );
           }
 
@@ -335,18 +347,21 @@
             }
           }
 
-          // For commands that set a global keyboard shortcut, make a table
-          // listing the shortcut that will be set.
+          // Pretty-print supported commands.
           for (let pre of srcEl.querySelectorAll("pre")) {
-            let p = pre
-              .closest("section")
-              ?.querySelector(":scope > p:last-of-type");
-            if (p == null) continue;
+            let section = pre.closest("section");
+            if (section == null) continue;
+
+            let p = section.querySelector(":scope > .contents");
 
             let tbody;
-            let table = El("table", (tbody = El("tbody")));
+            let table = El(
+              { tag: "table", cellspacing: "0" },
+              (tbody = El("tbody"))
+            );
 
             for (let line of pre.innerText.split("\n")) {
+              // Pretty-print commands that set a keyboard shortcut.
               {
                 let m = line
                   .trim()
@@ -385,6 +400,45 @@
                 }
               }
 
+              // Pretty-print `brew install` commands.
+              {
+                let m = line
+                  .trim()
+                  .match(
+                    /^brew install( --cask)? "?([^ "]+)"?( # (.*)( \((.*)\))?)?$/
+                  );
+                if (m) {
+                  let [, isCask, appId, , appName, , appComment] = m;
+                  tbody.append(
+                    El(
+                      "tr",
+                      El(
+                        { tag: "td", colspan: "3" },
+                        El(
+                          "p",
+                          "Install ",
+                          El(
+                            {
+                              tag: "a",
+                              isCask,
+                              href: isCask
+                                ? `https://formulae.brew.sh/cask/${appId}`
+                                : `https://formulae.brew.sh/formula/${appId}`,
+                              target: "_blank",
+                            },
+                            appName ?? appId
+                          ),
+                          appComment ? ` (${appComment})` : ""
+                        )
+                      )
+                    )
+                  );
+
+                  continue;
+                }
+              }
+
+              // Pretty-print comments.
               {
                 let m = line.trim().match(/^## ?(.*)$/);
                 if (m) {
@@ -395,6 +449,8 @@
                     )
                   );
                 }
+
+                continue;
               }
             }
 
