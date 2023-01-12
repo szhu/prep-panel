@@ -2,6 +2,7 @@
   <head>
     <meta charset="UTF-8" />
     <base target="_blank" />
+    <title>Mac Prep Panel</title>
     <style>
       :root {
         user-select: none;
@@ -10,8 +11,8 @@
 
         --text: #1a1a1a;
         --text-dim: gray;
-        --background: #e5e5e5;
-        --fieldset-background: #e0e0e0;
+        --background: #ececec;
+        --fieldset-background: #e8e8e9;
         --border: #dbdbdb;
         --divider: #dbdbdb;
       }
@@ -63,6 +64,9 @@
         border-left: 1em solid transparent;
       }
 
+      button {
+        font: inherit;
+      }
       kbd {
         font: inherit;
       }
@@ -358,7 +362,7 @@
                 let m = line
                   .trim()
                   .match(
-                    /^defaults write "([^"]+)" "NSUserKeyEquivalents" -dict-add "([^"]+)" '?"([^"]+)"'?;$/
+                    /^defaults write "\$?([^"]+)" "NSUserKeyEquivalents" -dict-add "([^"]+)" '?"([^"]+)"'?;$/
                   );
                 if (m) {
                   let [, appId, menuPath, key] = m;
@@ -416,7 +420,7 @@
                               : `https://formulae.brew.sh/formula/${appId}`,
                             target: "_blank",
                           },
-                          appName ?? appId
+                          appName ?? El("code", appId)
                         ),
                         appComment ? ` (${appComment})` : ""
                       )

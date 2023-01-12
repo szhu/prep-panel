@@ -1,38 +1,55 @@
 # MacPrepPanel
 
-> **Note**\
-> This is still a work in progress.
+MacPrepPanel is a **portable**, **forkable**, **Markdown-based** settings panel
+for **changing hidden settings** or for **interactively provisioning a new
+computer**.
 
-MacPrepPanel is a customizable settings panel.
+The panel framework can be used on any OS. The prep scripts in this repo are for
+setting up a Mac to my personal preferences.
 
 <img width="687" alt="Screenshot" src="https://user-images.githubusercontent.com/1570168/180943475-97b281b0-d0b5-4a4b-b579-875bbb0d7124.png">
 
-## Why?
+<details><summary>View full panel screenshot</summary>
+
+<img width="552" src="https://user-images.githubusercontent.com/1570168/212200068-5441bcd1-e47d-4584-9eb7-ca3bdfa6ca39.png">
+
+</details>
+
+⏵ [View panel Markdown source](panel/content.md)
+
+## What's it for?
 
 MacPrepPanel was originally built for two main use cases:
 
-- As a quick way to change hidden settings, similar to [TinkerTool],
-  [defaults-write.com], [Secrets] (discontinued), and [Hidden Settings
-  Preference Pane] (discontinued).
+**Hidden settings manager.**\
+Use MacPrepPanel as a quick way to change hidden settings. It is inspired by these
+tools, most of which I have used before:
+
+- [TinkerTool],
+- [defaults-write.com]
+- [Secrets] (discontinued)
+- [Hidden Settings Preference Pane] (discontinued).
 
 [tinkertool]: https://www.bresink.com/osx/TinkerTool.html
 [secrets]: https://code.google.com/p/blacktree-secrets/
 [defaults-write.com]: http://defaults-write.com/
 [hidden settings preference pane]: https://hasseg.org/hiddenSettingsPref/
 
-- As a quick way to apply your preferences to a new computer or user account.
-  This use case is similar to bootstrapping scripts and tools like [Vagrant] and
-  [Brewfiles].
+**Interactive provisioning.**\
+Use MacPrepPanel as a quick way to apply your preferences to a new computer or user
+account. This use case is similar to bootstrapping scripts and tools like [Vagrant]
+and [Brewfiles].
 
 [vagrant]: https://www.vagrantup.com
 [brewfiles]: https://github.com/Homebrew/homebrew-bundle
 
-This tool has some advantages compared to the alternatives:
+<details>
+<summary>This tool has some advantages compared to the alternatives:</summary>
 
 - **Self-contained.** Unlike other similar tools, this tool doesn't require the
   Mac to have Node, the Xcode Command Line Tools, or anything else installed,
   and it won't leave your Mac with anything new installed (except specifically
-  what you request). Its only dependecy is [Deno](https://deno.land), which is
+  what you request). Its only dependency is [Deno](https://deno.land), which is
   installed into the current directory, not any global location, as part of the
   instructions below. This also makes this app easily forkable.
 
@@ -46,7 +63,7 @@ This tool has some advantages compared to the alternatives:
   modeled after the upcoming macOS Ventura System Settings app.
 
 - **Markdown fallback.** If the app doesn't work in the future for some reason,
-  the content is still easily accesssible. Here's
+  the content is still easily accessible. Here's
   [the source code for the control panel](panel/content.md) -- it's just a
   Markdown doc listing the commands you can run to toggle each setting!
 
@@ -56,15 +73,18 @@ This tool has some advantages compared to the alternatives:
   terminal: If a program needs you to press the cursor keys to make a selection,
   or requires you to input a password, you can do that perfectly well.
 
-## How?
+</details>
+
+## Instructions
 
 To run the panel:
 
-1. Download as zip and unzip.
-2. Open a terminal and `cd` to the unzipped folder.
-3. Run: `utils/install-deno.sh`
-4. Run: `panel/serve.ts`
+1. Download the repo as zip.
+2. Unzip.
+3. Open a terminal and `cd` to the unzipped folder.
+4. Run: `utils/install-deno.sh`
+5. Run: `panel/serve.ts`
 
-## Who?
+## Credits
 
 [@szhu](https://github.com/szhu).

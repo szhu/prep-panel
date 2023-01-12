@@ -8,7 +8,7 @@
   defaults write "com.apple.finder" "QuitMenuItem" -bool true
   ```
 
-  - Reset to default
+  - <button>Reset</button>
 
     ```sh
     defaults delete "com.apple.finder" "QuitMenuItem"
@@ -20,7 +20,7 @@
   defaults write "com.apple.finder" "CreateDesktop" -bool false
   ```
 
-  - Reset to default
+  - <button>Reset</button>
 
     ```sh
     defaults delete "com.apple.finder" "CreateDesktop"
@@ -32,7 +32,7 @@
   defaults write "com.apple.finder" "ShowRecentTags" -int 0
   ```
 
-  - Reset to default
+  - <button>Reset</button>
 
     ```sh
     defaults delete "com.apple.finder" "ShowRecentTags"
@@ -44,7 +44,7 @@
   defaults write "NSGlobalDomain" "AppleShowAllExtensions" -int 1
   ```
 
-  - Reset to default
+  - <button>Reset</button>
 
     ```sh
     defaults delete "NSGlobalDomain" "AppleShowAllExtensions"
@@ -164,7 +164,7 @@ These settings are not accurate.
   defaults write "NSGlobalDomain" "com.apple.trackpad.forceClick" -int 0
   ```
 
-- Keyboard: Set backlight to minimum
+- Keyboard: Set backlight to minimum…
 
   ```sh
   open "/System/Library/PreferencePanes/Keyboard.prefPane"
@@ -197,6 +197,16 @@ These settings are not accurate.
 - Hold down to repeat
 
 ## Shortcuts & Gestures
+
+<!--
+To log all existing shortcuts:
+
+    for domain in (string split ", " (defaults domains) | sort)
+      echo -ne '\33[2K\r'$domain' '
+      defaults read $domain NSUserKeyEquivalents 2>/dev/null
+    end
+
+-->
 
 - Edit Menu
 
@@ -282,11 +292,54 @@ These settings are not accurate.
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Zoom" '"~^↩"';
   ```
 
+- <button>Remove all global shortcuts</button>
+
+  ```sh
+  defaults delete "NSGlobalDomain" "NSUserKeyEquivalents"
+  ```
+
+- Finder
+
+  ```sh
+  Finder="com.apple.Finder"
+
+  defaults write "$Finder" "NSUserKeyEquivalents" -dict-add "\033File\033Rename" '"@↩"';
+  defaults write "$Finder" "NSUserKeyEquivalents" -dict-add "\033File\033Rename…" '"@↩"';
+  ```
+
+  - <button>Remove all Finder shortcuts</button>
+
+    ```sh
+    defaults delete "com.apple.Finder" "NSUserKeyEquivalents"
+    ```
+
 - Safari
 
   ```sh
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Develop\033Show Snippet Editor" '"@~\\U21a9"';
+  Safari="com.apple.Safari"
+
+  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033File\033Export as PDF…" '"@$e"';
+  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Edit\033Undo Close Tab" '"@$t"';
+  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033View\033Always Show Toolbar in Full Screen" '"@$f"';
+  ##
+  # For some reason, if this is set to @\, it becomes $@\.
+  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Sidebar" '"^\\"';
+  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033View\033Show Sidebar" '"^\\"';
+  ##
+  # defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Window\033Go to Next Tab Group" '"@~$\\U0093"';
+  # defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Window\033Go to Previous Tab Group" '"@~$\\U0091"';
+  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Window\033Pin Tab" '"@p"';
+  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Window\033Unpin Tab" '"@p"';
+  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033File\033Print…" '"@$p"';
+  ##
+  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Develop\033Show Snippet Editor" '"@~\\U21a9"';
   ```
+
+  - <button>Remove all Safari shortcuts</button>
+
+    ```sh
+    defaults delete "com.apple.Safari" "NSUserKeyEquivalents"
+    ```
 
 - Keynote, Numbers, Pages
 
@@ -310,21 +363,27 @@ These settings are not accurate.
   ##
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Inspector\033Hide Inspector" '"@\\\\"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Inspector\033Show Inspector" '"@\\\\"';
+  ##
+  Keynote="com.apple.iWork.Keynote"
+  defaults write "$Keynote" "NSUserKeyEquivalents" -dict-add "\033View\033Navigator" "@1";
+  defaults write "$Keynote" "NSUserKeyEquivalents" -dict-add "\033View\033Slide Only" "@2";
+  defaults write "$Keynote" "NSUserKeyEquivalents" -dict-add "\033View\033Light Table" "@3";
+  defaults write "$Keynote" "NSUserKeyEquivalents" -dict-add "\033View\033Outline" "@4";
   ```
 
-- Check that shortcuts have been set correctly: <button>Open Keyboard
-  Settings</button>
+  - <button>Remove all Keynote shortcuts</button>
+
+    ```sh
+    defaults delete "com.apple.iWork.Keynote" "NSUserKeyEquivalents"
+    ```
+
+- Check that shortcuts have been set correctly: <button>Keyboard
+  Settings…</button>
 
   ```sh
   osascript -e 'quit app id "com.apple.systempreferences"' || true
   sleep 0.5
   open '/System/Library/PreferencePanes/Keyboard.prefPane'
-  ```
-
-- <button>Reset all global custom keyboard shortcuts</button>
-
-  ```sh
-  defaults delete "NSGlobalDomain" "NSUserKeyEquivalents"
   ```
 
 - <kbd>^$</kbd>-click anywhere in a window to move it
@@ -382,14 +441,14 @@ These settings are not accurate.
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   ```
 
-## Dev tooling
+## IDE & Shells
 
 - ```sh
   brew install --cask visual-studio-code # Visual Studio Code
   ```
 
 - ```sh
-  brew install fish # fish shell
+  brew install fish
   echo 'eval (/opt/homebrew/bin/brew shellenv)' > ~/.config/fish/conf.d/homebrew.fish
   ```
 
@@ -424,26 +483,31 @@ These settings are not accurate.
   ```
 
 - ```sh
-  brew install --cask gitup
+  brew install --cask gitup # GitUp
   ```
 
 - ```sh
   brew install gh
   ```
 
-- Log into GitHub using `gh`…
+  - <button>Log in to `gh`…</button>
+
+    ```sh
+    open_terminal
+    gh auth login
+    ```
+
+- Set up a global gitignore
 
   ```sh
-  open_terminal
-  gh auth login
-  ```
-
-- Set up a global gitignore, ignoring `.DS_Store` files
-
-  ```sh
-  echo '.DS_Store' > ~/.gitignore
   git config --global core.excludesfile ~/.gitignore
   ```
+
+  - Globally ignore `.DS_Store` files
+
+    ```sh
+    echo '.DS_Store' > ~/.gitignore
+    ```
 
 ## Work
 
