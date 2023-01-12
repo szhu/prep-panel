@@ -8,11 +8,23 @@
   defaults write "com.apple.finder" "QuitMenuItem" -bool true
   ```
 
+  - Reset to default
+
+    ```sh
+    defaults delete "com.apple.finder" "QuitMenuItem"
+    ```
+
 - Hide desktop
 
   ```sh
   defaults write "com.apple.finder" "CreateDesktop" -bool false
   ```
+
+  - Reset to default
+
+    ```sh
+    defaults delete "com.apple.finder" "CreateDesktop"
+    ```
 
 - Hide tags in sidebar
 
@@ -20,11 +32,23 @@
   defaults write "com.apple.finder" "ShowRecentTags" -int 0
   ```
 
+  - Reset to default
+
+    ```sh
+    defaults delete "com.apple.finder" "ShowRecentTags"
+    ```
+
 - Show file extensions
 
   ```sh
   defaults write "NSGlobalDomain" "AppleShowAllExtensions" -int 1
   ```
+
+  - Reset to default
+
+    ```sh
+    defaults delete "NSGlobalDomain" "AppleShowAllExtensions"
+    ```
 
 - Desktop: Apply preferred view settings
 
@@ -54,7 +78,7 @@
 
 - Hide AirDrop in sidebar
 
-- To apply changes immediately: <button>Quit Finder</button>
+- Apply changes: <button>Quit Finder</button>
 
   ```sh
   osascript -e 'quit app id "com.apple.finder"'
@@ -62,7 +86,7 @@
 
 ## Dock
 
-- <button>Clear all apps</button>
+- Remove all apps
 
   ```sh
   defaults delete "com.apple.Dock" "persistent-apps"
@@ -70,7 +94,7 @@
 
 - Don't show recents
 
-- To apply changes immediately: <button>Quit Dock</button>
+- Apply changes: <button>Quit Dock</button>
 
   ```sh
   osascript -e 'quit app id "com.apple.Dock"'
@@ -102,7 +126,7 @@
 
 ## iCloud
 
-- Sign into iCloud
+- Sign into iCloud…
 
   ```sh
   open "/System/Library/PreferencePanes/AppleIDPrefPane.prefPane"
@@ -110,13 +134,13 @@
 
 ## Security
 
-- Add Touch ID
+- Add Touch ID…
 
   ```sh
   open "/System/Library/PreferencePanes/TouchID.prefPane"
   ```
 
-- Turn on FileVault
+- Turn on FileVault…
 
   ```sh
   open "x-apple.systempreferences:com.apple.preference.security?FDE"
@@ -184,11 +208,11 @@ These settings are not accurate.
 - Left-hand-only shortcuts for Tab Overview
 
   ```sh
-  ## Most apps
+  ## For most apps:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Show All Tabs" '"^`"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Exit Tab Overview" '"^`"';
   ##
-  ## Safari
+  ## For: Safari
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Show Tab Overview" '"^`"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Tab Overview" '"^`"';
 
@@ -197,13 +221,13 @@ These settings are not accurate.
 - Left-hand-only shortcuts for Back/Forward
 
   ```sh
-  ## Most browsers
+  ## For most browsers:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033History\033Back" '"@$s"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033History\033Forward" '"@$d"';
-  ## Prevents another Safari shortcut from overriding it
+  ## Prevent another Safari shortcut from overriding it:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Bookmarks\033Bookmark All Tabs…" '"@~$d"';
   ##
-  ## Finder
+  ## For Finder:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Go\033Back" '"@$s"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Go\033Forward" '"@$d"';
 
@@ -231,7 +255,7 @@ These settings are not accurate.
 - Window tiling shortcuts (directional, using arrow keys)
 
   ```sh
-  ## The arrow key shortcuts don't always work for some reason.
+  ## Note: The arrow key shortcuts don't always work for some reason.
   ##
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move Window to Left Side of Screen" '"~^←"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move Window to Right Side of Screen" '"~^→"';
@@ -246,7 +270,7 @@ These settings are not accurate.
 - Window tiling shortcuts (logical)
 
   ```sh
-  ## The arrow key shortcuts don't always work for some reason.
+  ## Note: The arrow key shortcuts don't always work for some reason.
   ##
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move Window to Left Side of Screen" '"~^←"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move Window to Right Side of Screen" '"~^→"';
@@ -407,9 +431,10 @@ These settings are not accurate.
   brew install gh
   ```
 
-- Log into GitHub using `gh`
+- Log into GitHub using `gh`…
 
   ```sh
+  open_terminal
   gh auth login
   ```
 
@@ -424,17 +449,14 @@ These settings are not accurate.
 
 - ```sh
   brew install --cask "google-chrome" # Google Chrome
-  open "/Applications/Google Chrome.app"
   ```
 
 - ```sh
   brew install --cask "zoom" # Zoom
-  open "/Applications/zoom.us.app"
   ```
 
 ## Play
 
 - ```sh
   brew install --cask "spotify" # Spotify
-  open "/Applications/Spotify.app"
   ```

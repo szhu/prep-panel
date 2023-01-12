@@ -71,7 +71,7 @@
         display: none;
       }
 
-      fieldset > section {
+      section {
         display: flex;
         gap: 0.3em;
       }
@@ -283,11 +283,11 @@
         let dstEl = document.createElement("body");
         {
           // Remove the <ul>/<ol> surrounding list items.
-          for (let el of srcEl.querySelectorAll(":scope > ul, :scope > ol")) {
+          for (let el of srcEl.querySelectorAll("ul, ol")) {
             unwrapEl(el);
           }
 
-          for (let el of srcEl.querySelectorAll(":scope > li")) {
+          for (let el of srcEl.querySelectorAll("li")) {
             // Replace <li> with <section>.
             el = replaceWrapper(el, document.createElement("section"));
             for (let child of [...el.childNodes]) {
@@ -301,7 +301,7 @@
           }
 
           // Add a checkbox to each <section> item.
-          for (let section of srcEl.querySelectorAll(":scope > section")) {
+          for (let section of srcEl.querySelectorAll("section")) {
             let sectionContents = lineEl(
               section,
               El({ tag: "div", class: "contents" })
@@ -319,7 +319,7 @@
 
           // If the list item has a <button>, remove the checkbox. (The user
           // will click the button instead of the checkbox.)
-          for (let el of srcEl.querySelectorAll(":scope > section button")) {
+          for (let el of srcEl.querySelectorAll("section button")) {
             // el.type = "button";
             let section = el.closest("section");
             for (let checkbox of section.querySelectorAll("input")) {
@@ -345,8 +345,6 @@
           for (let pre of srcEl.querySelectorAll("pre")) {
             let section = pre.closest("section");
             if (section == null) continue;
-
-            let p = section.querySelector(":scope > .contents");
 
             let tbody;
             let table = El(
@@ -399,7 +397,7 @@
                 let m = line
                   .trim()
                   .match(
-                    /^brew install( --cask)? "?([^ "]+)"?( # (.*)( \((.*)\))?)?$/
+                    /^brew install( --cask)? "?([^ "]+)"?( # ([^()]*)( \((.*)\))?)?$/
                   );
                 if (m) {
                   let [, isCask, appId, , appName, , appComment] = m;
@@ -434,10 +432,7 @@
                 let m = line.trim().match(/^## ?(.*)$/);
                 if (m) {
                   tbody.append(
-                    El(
-                      "tr",
-                      El({ tag: "td", colspan: "3", class: "comment" }, m[1])
-                    )
+                    El("tr", El({ tag: "td", colspan: "3", class: "" }, m[1]))
                   );
                 }
 
@@ -446,7 +441,7 @@
             }
 
             if (tbody.childElementCount > 0) {
-              p.append(table);
+              pre.insertAdjacentElement("beforebegin", table);
             }
           }
 

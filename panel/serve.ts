@@ -70,7 +70,16 @@ async function handleRequest(request): Response {
     let json = JSON.parse(text);
     if (json.action === "RunCommandV1") {
       let cmd = json.shell
-        ? ["/bin/sh", "-c", "set -ev\n" + json.command]
+        ? [
+            "/bin/sh",
+            "-c",
+            [
+              //
+              `open_terminal() { open -b ${JSON.stringify(terminalAppId)}; }`,
+              "set -ev",
+              json.command,
+            ].join("\n"),
+          ]
         : json.command;
 
       if (false) {
