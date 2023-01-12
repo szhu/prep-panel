@@ -69,17 +69,21 @@ async function handleRequest(request): Response {
     let text = await request.text();
     let json = JSON.parse(text);
     if (json.action === "RunCommandV1") {
-      let cmd = json.shell ? ["/bin/sh", "-c", json.command] : json.command;
+      let cmd = json.shell
+        ? ["/bin/sh", "-c", "set -ev\n" + json.command]
+        : json.command;
 
-      if (!json.command.match(/^open /)) {
-        Deno.run({ cmd: ["open", "-b", terminalAppId] });
-        await new Promise((resolve) => setTimeout(resolve, 300));
+      if (false) {
+        if (!json.command.match(/^open /)) {
+          Deno.run({ cmd: ["open", "-b", terminalAppId] });
+          await new Promise((resolve) => setTimeout(resolve, 300));
+        }
       }
 
-      let [firstLine, ...restLines] = json.command.split("\n");
-      console.log(
-        ["$ " + firstLine, ...restLines.map((line) => "  " + line)].join("\n")
-      );
+      // let [firstLine, ...restLines] = json.command.split("\n");
+      // console.log(
+      //   ["$ " + firstLine, ...restLines.map((line) => "  " + line)].join("\n")
+      // );
 
       let process = Deno.run({ cmd });
       currentlyRunningProcesses.push(process);

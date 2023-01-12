@@ -45,6 +45,7 @@
         font-weight: bold;
 
         position: sticky;
+        z-index: 1;
         top: 0;
         background: var(--background);
       }
@@ -98,6 +99,22 @@
       a {
         color: initial;
       }
+
+      input[type="checkbox"] {
+        position: relative;
+      }
+
+      input[type="checkbox"][status]::after {
+        content: attr(status);
+        font-size: 0.9em;
+        position: absolute;
+        top: -10%;
+        left: -10%;
+        bottom: -10%;
+        right: 0;
+        line-height: 1.5;
+      }
+
     </style>
   </head>
   <body>
@@ -144,21 +161,30 @@
       }
 
       document.addEventListener("click", async (e) => {
-        if (!e.target.matches(`button, input[type="checkbox"]`)) return;
+        if (!(e.target instanceof Element)) return;
 
-        let containerEl = e.target.closest(`section`);
+        if (!e.target.matches(`button, input[type="checkbox"]`)) return;
+        let buttonOrCheckbox = /** @type {HTMLInputElement} */ (e.target);
+        e.preventDefault();
+
+        let containerEl = buttonOrCheckbox.closest(`section`);
         if (containerEl == null) return;
 
-        let el = containerEl.querySelector(`[type="run-shell"]`);
+        let el = /**@type {HTMLPreElement} */ (
+          containerEl.querySelector(`[type="run-shell"]`)
+        );
         if (el == null) return;
 
         let shellCommand = dedent(el.innerText);
+
+        buttonOrCheckbox.setAttribute("status", "🔄");
         let result = await runShellCommand(shellCommand);
 
         if (result.code === 0) {
-          e.target.checked = true;
+          buttonOrCheckbox.checked = true;
+          buttonOrCheckbox.setAttribute("status", "✅");
         } else {
-          e.target.style.outline = "1px dotted red";
+          buttonOrCheckbox.setAttribute("status", "❌");
         }
       });
 
