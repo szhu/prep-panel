@@ -51,8 +51,17 @@
       }
 
       table {
+        margin: 0.5em 1.3em;
         font: inherit;
+        border-collapse: separate;
       }
+      td {
+        height: 0.5em;
+      }
+      tr > td + td {
+        border-left: 1em solid transparent;
+      }
+
       kbd {
         font: inherit;
       }
@@ -115,6 +124,10 @@
         line-height: 1.5;
       }
 
+      .comment {
+        opacity: 0.7;
+        font-style: italic;
+      }
     </style>
   </head>
   <body>
@@ -122,6 +135,9 @@
     <script src="https://spec.commonmark.org/dingus/commonmark.js"></script>
     <script type="markdown" src="/content.md"></script>
     <script>
+      // @ts-check
+      let commonmark = /** @type {any} */ (window).commonmark;
+
       /**
        * Tell the server to run a shell command.
        */
@@ -212,9 +228,18 @@
 
       /**
        * Shorthand for creating an element.
+       *
+       * @param {string | {[key: string]: string}} tagOrAttributes
+       * @param  {...(string | Node)} children
        */
-      function El(tag, attributes, ...children) {
-        let el = document.createElement(tag);
+      function El(tagOrAttributes, ...children) {
+        let [tag, attributes] =
+          typeof tagOrAttributes === "string"
+            ? [tagOrAttributes, {}]
+            : [tagOrAttributes.tag, tagOrAttributes];
+        delete attributes.tag;
+
+        let el = document.createElement(tag || "div");
         for (let key in attributes) {
           el.setAttribute(key, attributes[key]);
         }
@@ -261,7 +286,7 @@
             for (let child of [...el.childNodes]) {
               // Surround the list item contents with <p>.
               if (child instanceof Text && child.textContent.trim()) {
-                el.append(El("p", {}, child));
+                el.append(El("p", child));
               } else {
                 el.append(child);
               }
@@ -273,12 +298,13 @@
             ":scope > section > p:first-child"
           )) {
             // Add spacer after checkbox.
-            el.insertAdjacentElement("afterbegin", El("span", {}, " "));
+            el.insertAdjacentElement("afterbegin", El("span", " "));
 
             // Add checkbox.
             el.insertAdjacentElement(
               "afterbegin",
-              El("input", {
+              El({
+                tag: "input",
                 type: "checkbox",
                 onclick: "this.checked=false",
               })
@@ -288,7 +314,7 @@
           // If the list item has a <button>, remove the checkbox. (The user
           // will click the button instead of the checkbox.)
           for (let el of srcEl.querySelectorAll(":scope > section button")) {
-            el.type = "button";
+            // el.type = "button";
             let section = el.closest("section");
             for (let checkbox of section.querySelectorAll("input")) {
               checkbox.remove();
@@ -309,45 +335,71 @@
             }
           }
 
+          // For commands that set a global keyboard shortcut, make a table
+          // listing the shortcut that will be set.
           for (let pre of srcEl.querySelectorAll("pre")) {
-            let p = pre.closest("section")?.querySelector("p");
+            let p = pre
+              .closest("section")
+              ?.querySelector(":scope > p:last-of-type");
             if (p == null) continue;
 
             let tbody;
-            let table = El("table", {}, (tbody = El("tbody")));
-            p.append(table);
+            let table = El("table", (tbody = El("tbody")));
 
             for (let line of pre.innerText.split("\n")) {
-              let m = line
-                .trim()
-                .match(
-                  /^defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "([^"]+)" "([^"]+)";$/
-                );
+              {
+                let m = line
+                  .trim()
+                  .match(
+                    /^defaults write "([^"]+)" "NSUserKeyEquivalents" -dict-add "([^"]+)" '?"([^"]+)"'?;$/
+                  );
+                if (m) {
+                  let [, appId, menuPath, key] = m;
 
-              if (m == null) continue;
-              let menuParts = m[1].split("\\033").filter(Boolean);
-              let menuRepr = menuParts.join(" → ");
+                  let appRepr = appId === "NSGlobalDomain" ? "Global" : appId;
 
-              table.append(
-                El(
-                  //
-                  "tr",
-                  {},
-                  El("td", {}, menuRepr),
-                  El(
-                    "td",
-                    {},
+                  let menuParts = menuPath.split("\\033").filter(Boolean);
+                  let menuRepr = menuParts.join(" → ");
+
+                  tbody.append(
                     El(
-                      "kbd",
-                      {},
-                      m[2]
-                        //
-                        .replace(/\\(.)/g, "$1")
-                        .replace(/\\\\/g, "\\")
+                      "tr",
+                      El(
+                        {
+                          tag: "td",
+                          class: appId === "NSGlobalDomain" ? "comment" : null,
+                        },
+                        appRepr
+                      ),
+                      El("td", menuRepr),
+                      El(
+                        "td",
+                        El(
+                          "kbd",
+                          key.replace(/\\(.)/g, "$1").replace(/\\\\/g, "\\")
+                        )
+                      )
                     )
-                  )
-                )
-              );
+                  );
+                  continue;
+                }
+              }
+
+              {
+                let m = line.trim().match(/^## ?(.*)$/);
+                if (m) {
+                  tbody.append(
+                    El(
+                      "tr",
+                      El({ tag: "td", colspan: "3", class: "comment" }, m[1])
+                    )
+                  );
+                }
+              }
+            }
+
+            if (tbody.childElementCount > 0) {
+              p.append(table);
             }
           }
 
@@ -360,6 +412,7 @@
               .replace(/\^/g, "⌃")
               .replace(/\bSpc\b/g, "⎵")
               .replace(/ /g, "⎵")
+              .replace(/\\U21a9/g, "\u21a9")
               .toUpperCase();
           }
 

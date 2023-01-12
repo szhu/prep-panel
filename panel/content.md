@@ -178,90 +178,133 @@ These settings are not accurate.
 
 ## Shortcuts & Gestures
 
-- <button>Reset all global custom keyboard shortcuts</button>
-
-  ```sh
-  defaults delete "NSGlobalDomain" "NSUserKeyEquivalents"
-  ```
-
-Note: There is still an error with escaping some of the characters in these, and
-they don't work via the script yet.
-
-- <kbd>@~Y</kbd> for Merge Windows
-
-- <kbd>@$V</kbd> for Paste and Match Style
-
-- <kbd>@$S</kbd> Back, <kbd>$@D</kbd> Forward
-
-- <kbd>^Spc</kbd> Show/Exit Tab Overview
-
 - Edit Menu
 
   ```sh
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Edit\033Paste and Match Style" "@\$v";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Edit\033Emoji & Symbols" "^$ ";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Edit\033Paste and Match Style" '"@$v"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Edit\033Emoji & Symbols" '"^$ "';
   ```
 
-- Tab Overview
+- Left-hand-only shortcuts for Tab Overview
 
   ```sh
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Exit Tab Overview" "^\`";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Show Tab Overview" "^\`";
+  ## Most apps
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Show All Tabs" '"^`"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Exit Tab Overview" '"^`"';
+  ##
+  ## Safari
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Show Tab Overview" '"^`"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Tab Overview" '"^`"';
+
   ```
 
-- Left-hand-only shortcuts for back/forward
+- Left-hand-only shortcuts for Back/Forward
 
   ```sh
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Go\033Back" "@\$s";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Go\033Forward" "@\$d";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033History\033Back" "@\$s";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033History\033Forward" "@\$d";
-  # Prevents Safari's default shortcut from overriding it
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Bookmarks\033Bookmark All Tabs…" "@~\$d";
+  ## Most browsers
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033History\033Back" '"@$s"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033History\033Forward" '"@$d"';
+  ## Prevents another Safari shortcut from overriding it
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Bookmarks\033Bookmark All Tabs…" '"@~$d"';
+  ##
+  ## Finder
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Go\033Back" '"@$s"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Go\033Forward" '"@$d"';
 
   ```
 
 - Merge Windows
 
   ```sh
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Merge All Windows" "@\$y";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Merge All Windows" '"@$y"';
   ```
 
-- Spectable/Rectangle-like shortcuts for the Window menu
+- Window tiling shortcuts (directional, using regular keys)
 
   ```sh
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move Window to Left Side of Screen" "~^\\[";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move Window to Right Side of Screen" "~^\\]";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Tile Window to Left of Screen" "~^$\\[";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Tile Window to Right of Screen" "~^$\\]";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Revert" "~^\\'";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Zoom All" "~^$=";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Zoom" "~^=";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move Window to Left Side of Screen" '"~^["';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move Window to Right Side of Screen" '"~^]"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Tile Window to Left of Screen" '"@~^["';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Tile Window to Right of Screen" '"@~^]"';
+  ##
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Revert" "~^'";
+  # defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Zoom All" '"~^$="';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Zoom" '"~^="';
+  ```
+
+- Window tiling shortcuts (directional, using arrow keys)
+
+  ```sh
+  ## The arrow key shortcuts don't always work for some reason.
+  ##
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move Window to Left Side of Screen" '"~^←"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move Window to Right Side of Screen" '"~^→"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Tile Window to Left of Screen" '"@~^←"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Tile Window to Right of Screen" '"@~^→"';
+  ##
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Revert" "~^↓";
+  # defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Zoom All" '"~^$↑"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Zoom" '"~^↑"';
+  ```
+
+- Window tiling shortcuts (logical)
+
+  ```sh
+  ## The arrow key shortcuts don't always work for some reason.
+  ##
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move Window to Left Side of Screen" '"~^←"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move Window to Right Side of Screen" '"~^→"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Tile Window to Left of Screen" '"@~^$←"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Tile Window to Right of Screen" '"@~^$→"';
+  ##
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Revert" "~^'";
+  # defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Zoom All" '"~^$↩"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Zoom" '"~^↩"';
   ```
 
 - Safari
 
   ```sh
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033File\033Export To\033PDF…" "@\$e";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Develop\033Show Snippet Editor" "@~\\U00a9";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Develop\033Show Snippet Editor" '"@~\\U21a9"';
   ```
 
 - Keynote, Numbers, Pages
 
   ```sh
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Format\033Font\033Strikethrough" "@\$x";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Format\033Font\033Bigger" "@\$.";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Format\033Font\033Smaller" "@\$,";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Zoom\033Zoom In" "@=";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Zoom\033Zoom Out" "@-";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Arrange\033Align Objects\033Left" "@~[";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Arrange\033Align Objects\033Top" "@~,";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Insert\033Line\033Straight Connection Line" "@l";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Insert\033Shape\033Rectangle" "@r";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Insert\033Shape\033Rounded Rectangle" "@\$r";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Insert\033Text Box" "@↩";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Inspector\033Hide Inspector" "@\\\\";
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Inspector\033Show Inspector" "@\\\\";
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033File\033Export To\033PDF…" '"@$e"';
+  ##
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Format\033Font\033Strikethrough" '"@$x"';
+  ##
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Format\033Font\033Bigger" '"@$."';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Format\033Font\033Smaller" '"@$,"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Zoom\033Zoom In" '"@="';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Zoom\033Zoom Out" '"@-"';
+  ##
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Arrange\033Align Objects\033Left" '"@~["';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Arrange\033Align Objects\033Top" '"@~,"';
+  ##
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Insert\033Line\033Straight Connection Line" '"@l"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Insert\033Shape\033Rectangle" '"@r"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Insert\033Shape\033Rounded Rectangle" '"@$r"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Insert\033Text Box" '"@↩"';
+  ##
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Inspector\033Hide Inspector" '"@\\\\"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Inspector\033Show Inspector" '"@\\\\"';
+  ```
+
+- Check that shortcuts have been set correctly: <button>Open Keyboard
+  Settings</button>
+
+  ```sh
+  osascript -e 'quit app id "com.apple.systempreferences"' || true
+  sleep 0.5
+  open '/System/Library/PreferencePanes/Keyboard.prefPane'
+  ```
+
+- <button>Reset all global custom keyboard shortcuts</button>
+
+  ```sh
+  defaults delete "NSGlobalDomain" "NSUserKeyEquivalents"
   ```
 
 - <kbd>^$</kbd>-click anywhere in a window to move it
