@@ -7,8 +7,9 @@
       :root {
         user-select: none;
         color-scheme: light dark;
-        font: 13px -apple-system;
+        font: 13px var(--font-family);
 
+        --font-family: -apple-system, BlinkMacSystemFont, sans-serif;
         --text: #1a1a1a;
         --text-dim: gray;
         --background: #ececec;
@@ -59,7 +60,7 @@
 
         text-decoration: unset;
         color: unset;
-        font: 13px -apple-system;
+        font: 13px var(--font-family);
         cursor: default;
 
         padding: 4px 8px;
@@ -123,14 +124,14 @@
       h2 {
         margin: 0;
         padding: 12px 36px;
-        font: bold 16px -apple-system;
+        font: bold 16px var(--font-family);
         opacity: 0.95;
       }
 
       h3 {
         margin: 0;
         padding: 12px;
-        font: bold 14px -apple-system;
+        font: bold 14px var(--font-family);
         opacity: 0.95;
 
         /* position: sticky; */
