@@ -8,23 +8,11 @@
   defaults write "com.apple.finder" "QuitMenuItem" -bool true
   ```
 
-  - <button>Reset</button>
-
-    ```sh
-    defaults delete "com.apple.finder" "QuitMenuItem"
-    ```
-
 - Hide desktop
 
   ```sh
   defaults write "com.apple.finder" "CreateDesktop" -bool false
   ```
-
-  - <button>Reset</button>
-
-    ```sh
-    defaults delete "com.apple.finder" "CreateDesktop"
-    ```
 
 - Hide tags in sidebar
 
@@ -32,23 +20,11 @@
   defaults write "com.apple.finder" "ShowRecentTags" -int 0
   ```
 
-  - <button>Reset</button>
-
-    ```sh
-    defaults delete "com.apple.finder" "ShowRecentTags"
-    ```
-
 - Show file extensions
 
   ```sh
   defaults write "NSGlobalDomain" "AppleShowAllExtensions" -int 1
   ```
-
-  - <button>Reset</button>
-
-    ```sh
-    defaults delete "NSGlobalDomain" "AppleShowAllExtensions"
-    ```
 
 - Desktop: Apply preferred view settings
 

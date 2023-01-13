@@ -304,6 +304,61 @@
             }
           }
 
+          for (let el of srcEl.querySelectorAll("section")) {
+            let pre = el.querySelector("pre");
+            if (pre == null) continue;
+
+            let lines = pre.innerText.split("\n");
+            lines = lines
+              .filter((line) => !line.startsWith("#"))
+              .filter((line) => line.trim().length > 0)
+              .filter((line) => !line.startsWith("open "));
+
+            if (lines.length !== 1) continue;
+
+            // Add "Reset" button to `defaults write` commands.
+            {
+              let m = lines[0].match(
+                /^defaults write ([^ \n]+) ([^ \n]+) -(bool|int)* /
+              );
+              if (m) {
+                let [, domain, key] = m;
+                // let pre = el.querySelector("pre");
+                // if (pre && pre.innerText.startsWith("defaults write")) {
+                el.append(
+                  El(
+                    "section",
+                    El(
+                      "p",
+                      El({ tag: "button", type: "button" }, "Reset"),
+                      El("pre", `defaults delete ${domain} ${key}`)
+                    )
+                  )
+                );
+                continue;
+              }
+            }
+
+            // Add "Uninstall" button to `brew install` commands.
+            {
+              let m = lines[0].match(/^brew install (--cask )?([^ ]+)/);
+              if (m) {
+                let [, flags, name] = m;
+                el.append(
+                  El(
+                    "section",
+                    El(
+                      "p",
+                      El({ tag: "button", type: "button" }, "Uninstall"),
+                      El("pre", `brew uninstall ${flags ?? ""}${name}`)
+                    )
+                  )
+                );
+                continue;
+              }
+            }
+          }
+
           // Add a checkbox to each <section> item.
           for (let section of srcEl.querySelectorAll("section")) {
             let sectionContents = lineEl(
