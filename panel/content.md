@@ -50,9 +50,26 @@
 
 ### Sidebar
 
-- Show Home
+- ```sh
+  # It is very hard to manually change the sidebar entries.
+  # They are stored in: ~/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteItems.sfl2
+  # More reading about the file format they use: https://eclecticlight.co/?s=alias
 
-- Hide AirDrop
+  brew install --cask "mysides" # mysides (utility to modify sidebar)
+  ```
+
+- Show Home (applies immediately)
+
+  ```sh
+  mysides add "Home" "file://${HOME}"
+  ```
+
+- Hide AirDrop (applies immediately)
+
+  ```sh
+  # For some reason, the AirDrop item has label "/".
+  mysides remove "/"
+  ```
 
 - Hide tags
 
@@ -62,7 +79,7 @@
 
 ###
 
-- Changes will be applied after Finder is quit and relaunched. <button>Relaunch
+- Changes will be applied after Finder is relaunched. <button>Relaunch
   Now</button>
 
   ```sh
@@ -83,9 +100,13 @@
 
 - Don't show recents
 
+  ```sh
+  defaults write "com.apple.Dock" "show-recents" -bool NO
+  ```
+
 ###
 
-- Changes will be applied after Dock is quit and relaunched. <button>Relaunch
+- Changes will be applied after Dock is relaunched. <button>Relaunch
   Now</button>
 
   ```sh
@@ -104,7 +125,23 @@
 
 ###
 
-- Set black wallpaper
+- Set desktop picture to Solid Black
+
+  ```sh
+  osascript -e '
+    tell application "Finder" to ¬
+      set desktop picture to POSIX file "/System/Library/Desktop Pictures/Solid Colors/Black.png"
+  '
+  ```
+
+- Set desktop picture to Hello Silver
+
+  ```sh
+  osascript -e '
+    tell application "Finder" to ¬
+      set desktop picture to POSIX file "/System/Library/Desktop Pictures/hello Grey.heic"
+  '
+  ```
 
 ###
 
@@ -120,7 +157,11 @@
 
 ###
 
-- Turn Reminders badge off
+- Turn off badge for Reminders: <button>Notification Settings…</button>
+
+  ```sh
+  open "x-apple.systempreferences:com.apple.preference.notifications"
+  ```
 
 ## ☁️ iCloud
 
@@ -143,7 +184,7 @@
 - Enable Touch ID…
 
   ```sh
-  open "/System/Library/PreferencePanes/TouchID.prefPane"
+  open "x-apple.systempreferences:com.apple.preferences.password"
   ```
 
 - Add lock screen message
@@ -509,7 +550,7 @@ To log all existing shortcuts:
   echo 'eval (/opt/homebrew/bin/brew shellenv)' > ~/.config/fish/conf.d/homebrew.fish
   ```
 
-- Set fish shell to be the default
+  - Set fish shell to be the default
 
 - ```sh
   brew install deno
