@@ -5,13 +5,13 @@
 - Show "Quit" menu item
 
   ```sh
-  defaults write "com.apple.finder" "QuitMenuItem" -bool true
+  defaults write "com.apple.finder" "QuitMenuItem" -bool YES
   ```
 
 - Hide desktop
 
   ```sh
-  defaults write "com.apple.finder" "CreateDesktop" -bool false
+  defaults write "com.apple.finder" "CreateDesktop" -bool NO
   ```
 
 - Hide tags in sidebar
@@ -166,11 +166,28 @@ These settings are not accurate.
 
 - Turn off auto-capitalization
 
+  ```sh
+  defaults write "NSGlobalDomain" "NSAutomaticCapitalizationEnabled" -bool NO
+  ```
+
 - Turn off smart quotes
+
+  ```sh
+  defaults write "NSGlobalDomain" "NSAutomaticQuoteSubstitutionEnabled" -bool NO
+  ```
 
 - Turn off double-space to period shortcut
 
 - Hold down to repeat
+  ```sh
+  defaults write "NSGlobalDomain" "NSAutomaticPeriodSubstitutionEnabled" -bool NO
+  ```
+
+- Turn dash substitution
+
+  ```sh
+  defaults write "NSGlobalDomain" "NSAutomaticDashSubstitutionEnabled" -bool NO
+  ```
 
 ## Shortcuts & Gestures
 
@@ -366,7 +383,7 @@ To log all existing shortcuts:
   [[?]](https://apple.stackexchange.com/a/365860)
 
   ```sh
-  defaults write "NSGlobalDomain" "NSWindowShouldDragOnGesture" -bool true
+  defaults write "NSGlobalDomain" "NSWindowShouldDragOnGesture" -bool YES
   ```
 
 - <kbd>^</kbd>-Right-click for Mission Control
