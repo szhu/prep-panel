@@ -5,6 +5,7 @@
     <title>Mac Prep Panel</title>
     <style>
       :root {
+        cursor: default;
         user-select: none;
         color-scheme: light dark;
         font: 13px var(--font-family);
@@ -51,8 +52,10 @@
         display: block;
         background: var(--fieldset-background);
         border-right: 1px solid var(--border);
-        min-width: 180px;
         padding: 8px;
+
+        width: clamp(200px, 35%, 220px);
+        flex-shrink: 0;
       }
 
       tabbed-tabs > a {
@@ -126,6 +129,9 @@
         padding: 12px 36px;
         font: bold 16px var(--font-family);
         opacity: 0.95;
+        -webkit-user-select: none;
+        user-select: none;
+        pointer-events: none;
       }
 
       h3 {
@@ -133,6 +139,9 @@
         padding: 12px;
         font: bold 14px var(--font-family);
         opacity: 0.95;
+        -webkit-user-select: none;
+        user-select: none;
+        pointer-events: none;
 
         /* position: sticky; */
         z-index: 1;
