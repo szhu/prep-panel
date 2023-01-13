@@ -1,23 +1,13 @@
 # Sean's recommended Mac settings
 
-## Finder
+## 🗂️ Finder
+
+###
 
 - Show "Quit" menu item
 
   ```sh
   defaults write "com.apple.finder" "QuitMenuItem" -bool YES
-  ```
-
-- Hide desktop
-
-  ```sh
-  defaults write "com.apple.finder" "CreateDesktop" -bool NO
-  ```
-
-- Hide tags in sidebar
-
-  ```sh
-  defaults write "com.apple.finder" "ShowRecentTags" -int 0
   ```
 
 - Show file extensions
@@ -26,7 +16,15 @@
   defaults write "NSGlobalDomain" "AppleShowAllExtensions" -int 1
   ```
 
-- Desktop: Apply preferred view settings
+### Desktop
+
+- Disable desktop
+
+  ```sh
+  defaults write "com.apple.finder" "CreateDesktop" -bool NO
+  ```
+
+- Apply preferred view settings
 
   ```sh
   defaults write "com.apple.finder" "DesktopViewSettings" -dict "'{
@@ -50,19 +48,34 @@
     };'"
   ```
 
-- Show Home in sidebar
+### Sidebar
 
-- Hide AirDrop in sidebar
+- Show Home
 
-- Apply changes: <button>Quit Finder</button>
+- Hide AirDrop
+
+- Hide tags
+
+  ```sh
+  defaults write "com.apple.finder" "ShowRecentTags" -int 0
+  ```
+
+###
+
+- Changes will be applied after Finder is quit and relaunched. <button>Relaunch
+  Now</button>
 
   ```sh
   osascript -e 'quit app id "com.apple.finder"'
+  sleep 0.5
+  open -b "com.apple.finder"
   ```
 
-## Dock
+## 🍎 Dock & Menu Bar
 
-- Remove all apps
+### Dock
+
+- Remove all applications
 
   ```sh
   defaults delete "com.apple.Dock" "persistent-apps"
@@ -70,13 +83,16 @@
 
 - Don't show recents
 
-- Apply changes: <button>Quit Dock</button>
+###
+
+- Changes will be applied after Dock is quit and relaunched. <button>Relaunch
+  Now</button>
 
   ```sh
   osascript -e 'quit app id "com.apple.Dock"'
   ```
 
-## System UI
+### Menu bar
 
 - Show Stage Manager in menu bar
 
@@ -84,11 +100,13 @@
 
 - Remove Wi-Fi from menu bar
 
-- Quick Note in left corner
+## 🎨 Appearance
 
-## Appearance
+###
 
 - Set black wallpaper
+
+###
 
 - Change accent color to blue
 
@@ -96,11 +114,15 @@
   defaults write "NSGlobalDomain" "AppleAccentColor" -int 4
   ```
 
-## Notifications
+## 🔔 Notifications
+
+###
 
 - Turn Reminders badge off
 
-## iCloud
+## ☁️ iCloud
+
+###
 
 - Sign into iCloud…
 
@@ -108,13 +130,23 @@
   open "/System/Library/PreferencePanes/AppleIDPrefPane.prefPane"
   ```
 
-## Security
+### Calendar
 
-- Add Touch ID…
+- Remove "US Holidays" Calendar
+
+## 🔒 Security
+
+###
+
+- Enable Touch ID…
 
   ```sh
   open "/System/Library/PreferencePanes/TouchID.prefPane"
   ```
+
+- Add lock screen message
+
+###
 
 - Turn on FileVault…
 
@@ -122,33 +154,20 @@
   open "x-apple.systempreferences:com.apple.preference.security?FDE"
   ```
 
-- Add lock screen message
+## ⌨️ Keyboard, Trackpad, Mouse
 
-## Keyboard, Trackpad, Mouse
+### Trackpad
 
-These settings are not accurate.
-
-- Trackpad: Use light click strength
+- Use light click strength
 
   ```sh
   open "/System/Library/PreferencePanes/Trackpad.prefPane"
   ```
 
-- Trackpad: Turn off force touch
+- Turn off force touch
 
   ```sh
   defaults write "NSGlobalDomain" "com.apple.trackpad.forceClick" -int 0
-  ```
-
-- Keyboard: Set backlight to minimum…
-
-  ```sh
-  open "/System/Library/PreferencePanes/Keyboard.prefPane"
-  ```
-
-- ```sh
-  brew install --cask "mos" # Mos (smooth scrolling)
-  open "/Applications/Mos.app"
   ```
 
 - ```sh
@@ -156,13 +175,28 @@ These settings are not accurate.
   open "/Applications/MiddleClick.app"
   ```
 
-- Keyboard: Hold to repeat
+### Mouse
+
+- ```sh
+  brew install --cask "mos" # Mos (smooth scrolling)
+  open "/Applications/Mos.app"
+  ```
+
+### Keyboard
+
+- Set backlight to minimum…
+
+  ```sh
+  open "/System/Library/PreferencePanes/Keyboard.prefPane"
+  ```
+
+- Hold to repeat
 
   ```sh
   defaults write "NSGlobalDomain" "ApplePressAndHoldEnabled" -bool NO
   ```
 
-## Text
+### Text Input
 
 - Turn off auto-capitalization
 
@@ -178,7 +212,6 @@ These settings are not accurate.
 
 - Turn off double-space to period shortcut
 
-- Hold down to repeat
   ```sh
   defaults write "NSGlobalDomain" "NSAutomaticPeriodSubstitutionEnabled" -bool NO
   ```
@@ -189,7 +222,7 @@ These settings are not accurate.
   defaults write "NSGlobalDomain" "NSAutomaticDashSubstitutionEnabled" -bool NO
   ```
 
-## Shortcuts & Gestures
+## ⚡️ Keyboard Shortcuts
 
 <!--
 To log all existing shortcuts:
@@ -201,6 +234,8 @@ To log all existing shortcuts:
 
 -->
 
+### All Applications
+
 - Edit Menu
 
   ```sh
@@ -211,11 +246,11 @@ To log all existing shortcuts:
 - Left-hand-only shortcuts for Tab Overview
 
   ```sh
-  ## For most apps:
+  ## For most applications:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Show All Tabs" '"^`"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Exit Tab Overview" '"^`"';
   ##
-  ## For: Safari
+  ## For Safari:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Show Tab Overview" '"^`"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Tab Overview" '"^`"';
 
@@ -224,11 +259,14 @@ To log all existing shortcuts:
 - Left-hand-only shortcuts for Back/Forward
 
   ```sh
+  Safari="com.apple.Safari"
+
   ## For most browsers:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033History\033Back" '"@$s"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033History\033Forward" '"@$d"';
+  ##
   ## Prevent another Safari shortcut from overriding it:
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Bookmarks\033Bookmark All Tabs…" '"@~$d"';
+  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Bookmarks\033Bookmark All Tabs…" '"@~$d"';
   ##
   ## For Finder:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Go\033Back" '"@$s"';
@@ -241,6 +279,8 @@ To log all existing shortcuts:
   ```sh
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Merge All Windows" '"@$y"';
   ```
+
+### Window Tiling
 
 - Window tiling shortcuts (directional, using regular keys)
 
@@ -285,11 +325,7 @@ To log all existing shortcuts:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Zoom" '"~^↩"';
   ```
 
-- <button>Remove all global shortcuts</button>
-
-  ```sh
-  defaults delete "NSGlobalDomain" "NSUserKeyEquivalents"
-  ```
+### Specific Applications
 
 - Finder
 
@@ -300,7 +336,7 @@ To log all existing shortcuts:
   defaults write "$Finder" "NSUserKeyEquivalents" -dict-add "\033File\033Rename…" '"@↩"';
   ```
 
-  - <button>Remove all Finder shortcuts</button>
+  - <button>Remove All Finder Shortcuts</button>
 
     ```sh
     defaults delete "com.apple.Finder" "NSUserKeyEquivalents"
@@ -364,11 +400,13 @@ To log all existing shortcuts:
   defaults write "$Keynote" "NSUserKeyEquivalents" -dict-add "\033View\033Outline" "@4";
   ```
 
-  - <button>Remove all Keynote shortcuts</button>
+  - <button>Remove All Keynote Shortcuts</button>
 
     ```sh
     defaults delete "com.apple.iWork.Keynote" "NSUserKeyEquivalents"
     ```
+
+###
 
 - Check that shortcuts have been set correctly: <button>Keyboard
   Settings…</button>
@@ -379,12 +417,28 @@ To log all existing shortcuts:
   open '/System/Library/PreferencePanes/Keyboard.prefPane'
   ```
 
+- <button>Remove All Global Shortcuts</button>
+
+  ```sh
+  defaults delete "NSGlobalDomain" "NSUserKeyEquivalents"
+  ```
+
+## ✨ Trackpad & Mouse Gestures
+
+###
+
+- Quick Note in left corner
+
+###
+
 - <kbd>^$</kbd>-click anywhere in a window to move it
   [[?]](https://apple.stackexchange.com/a/365860)
 
   ```sh
   defaults write "NSGlobalDomain" "NSWindowShouldDragOnGesture" -bool YES
   ```
+
+###
 
 - <kbd>^</kbd>-Right-click for Mission Control
 
@@ -422,11 +476,15 @@ To log all existing shortcuts:
   /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
   ```
 
-## Calendar
+## 🔨 Developer
 
-- Remove "US Holidays" Calendar
+###
 
-## Homebrew
+- Install Apple Command Line Tools
+
+  ```sh
+  xcode-select --install
+  ```
 
 - Install Homebrew
 
@@ -434,7 +492,7 @@ To log all existing shortcuts:
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   ```
 
-## IDE & Shells
+### IDE & Shells
 
 - ```sh
   brew install --cask visual-studio-code # Visual Studio Code
@@ -455,13 +513,13 @@ To log all existing shortcuts:
   brew install node
   ```
 
-## Terminal
+### Apple Terminal
 
 - useOptionAsMetaKey
 
 - single-line, blinking cursor
 
-## Git
+### Git
 
 - Configure display name globally
 
@@ -483,7 +541,7 @@ To log all existing shortcuts:
   brew install gh
   ```
 
-  - <button>Log in to `gh`…</button>
+  - <button>Log In To `gh`…</button>
 
     ```sh
     open_terminal
@@ -502,7 +560,17 @@ To log all existing shortcuts:
     echo '.DS_Store' > ~/.gitignore
     ```
 
-## Work
+## 🫖 Install Applications
+
+###
+
+- Install Homebrew
+
+  ```sh
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  ```
+
+### Work
 
 - ```sh
   brew install --cask "google-chrome" # Google Chrome
@@ -512,7 +580,7 @@ To log all existing shortcuts:
   brew install --cask "zoom" # Zoom
   ```
 
-## Play
+### Play
 
 - ```sh
   brew install --cask "spotify" # Spotify

@@ -33,19 +33,100 @@
         color: var(--text);
       }
 
+      body {
+        margin: 0;
+      }
+
+      tabbed-container {
+        display: flex;
+        flex-direction: row;
+        height: 100vh;
+      }
+
+      tabbed-tabs {
+        overflow-y: auto;
+        display: block;
+        background: var(--fieldset-background);
+        border-right: 1px solid var(--border);
+        min-width: 180px;
+        padding: 8px;
+      }
+
+      tabbed-tabs > a {
+        display: block;
+        text-decoration: unset;
+        cursor: default;
+        padding: 4px 8px;
+        line-height: 24px;
+        background: var(--fieldset-background);
+        border-radius: 6px;
+      }
+
+      tabbed-tabs a[selected] {
+        filter: brightness(0.9);
+      }
+
+      tabbed-tabs > a:active {
+        filter: brightness(0.8);
+      }
+
+      tabbed-contents {
+        display: block;
+        flex-grow: 1;
+      }
+
+      tabbed-contents:not([show-all]) {
+        overflow-y: auto;
+      }
+
+      tabbed-contents:not([show-all]) > tabbed-content:not(:target) {
+        display: none;
+      }
+
+      tabbed-content-header {
+        display: block;
+        position: sticky;
+        z-index: 1;
+        top: 0;
+        background: var(--background);
+        border-bottom: 1px solid transparent;
+        opacity: 0.95;
+      }
+
+      tabbed-contents[scroll-top-positive="true"]
+        > tabbed-content
+        > tabbed-content-header {
+        border-color: var(--border);
+        box-shadow: 0 0 4px var(--border);
+      }
+
+      tabbed-content-body {
+        display: block;
+        padding: 0 24px;
+      }
+
       fieldset {
         border: 1px solid var(--border);
-        border-radius: 10px;
+        border-radius: 6px;
         padding: 2px 12px;
         background: var(--fieldset-background);
         margin-bottom: 20px;
       }
 
-      header {
-        padding: 12px;
-        font-weight: bold;
+      h2 {
+        margin: 0;
+        padding: 12px 36px;
+        font: bold 16px -apple-system;
+        color: #1b1b1b;
+      }
 
-        position: sticky;
+      h3 {
+        margin: 0;
+        padding: 12px;
+        font: bold 14px -apple-system;
+        color: #1b1b1b;
+
+        /* position: sticky; */
         z-index: 1;
         top: 0;
         background: var(--background);
@@ -53,7 +134,7 @@
 
       table {
         /* margin: 0.5em 0; */
-        font: inherit;
+        font: unset;
         border-collapse: separate;
       }
       td {
@@ -65,10 +146,10 @@
       }
 
       button {
-        font: inherit;
+        font: unset;
       }
       kbd {
-        font: inherit;
+        font: unset;
       }
 
       [type="run-shell"] {
@@ -80,12 +161,12 @@
         gap: 0.3em;
       }
 
-      fieldset p {
+      p {
         margin: 0.5em 0;
       }
 
       fieldset > * + * {
-        border-top: 2px solid var(--divider);
+        border-top: 1px solid var(--divider);
       }
 
       section:not([data-has-command]) > .checkbox > p > input[type="checkbox"] {
@@ -133,7 +214,14 @@
   <body>
     <!-- <script src="https://unpkg.com/commonmark@0.30.0/dist/commonmark.js"></script> -->
     <script src="https://spec.commonmark.org/dingus/commonmark.js"></script>
-    <script type="markdown" src="/content.md"></script>
+
+    <tabbed-container>
+      <tabbed-tabs></tabbed-tabs>
+      <tabbed-contents>
+        <script type="markdown" src="/content.md"></script>
+      </tabbed-contents>
+    </tabbed-container>
+
     <script>
       // @ts-check
       let commonmark = /** @type {any} */ (window).commonmark;
@@ -158,7 +246,6 @@
        * Dedent each line to the indentation of the first line.
        */
       function dedent(s) {
-        // debugger
         let lines = s.split("\n");
         if (lines[0].match(/^\s*$/)) {
           lines.shift();
@@ -238,6 +325,16 @@
       }
 
       /**
+       * Replace the first element with the second element, and add the first
+       * element inside of it.
+       */
+      function wrapEl(el, wrapperEl) {
+        el.insertAdjacentElement("afterend", wrapperEl);
+        wrapperEl.append(el);
+        return wrapperEl;
+      }
+
+      /**
        * Shorthand for creating an element.
        *
        * @param {string | {[key: string]: string}} tagOrAttributes
@@ -282,9 +379,9 @@
         var result = writer.render(parsed);
         let srcEl = document.createElement("body");
         srcEl.innerHTML = result;
+        md.insertAdjacentElement("afterend", srcEl);
 
         // Transform output HTML.
-        let dstEl = document.createElement("body");
         {
           // Remove the <ul>/<ol> surrounding list items.
           for (let el of srcEl.querySelectorAll("ul, ol")) {
@@ -382,13 +479,8 @@
             // el.type = "button";
             let section = el.closest("section");
             for (let checkbox of section.querySelectorAll("input")) {
-              checkbox.remove();
+              checkbox.style.display = "none";
             }
-          }
-
-          // Replace <h2> with <header>.
-          for (let el of srcEl.querySelectorAll(":scope > h2")) {
-            replaceWrapper(el, document.createElement("header"));
           }
 
           // Add "type" attribute to <pre> elements.
@@ -517,34 +609,91 @@
               .toUpperCase();
           }
 
-          // Add <fieldset> around sections delineated by <header>.
-          while (srcEl.childElementCount > 0) {
-            let el = srcEl.firstElementChild;
+          // Remove all <h1>.
+          for (let el of srcEl.querySelectorAll("h1")) {
             el.remove();
-            if (el.matches("header")) {
-              dstEl.append(el);
-              let fieldset = document.createElement("fieldset");
-              dstEl.append(fieldset);
-            } else {
-              let fieldset = dstEl.querySelector(":scope > *:last-child");
-              if (fieldset != null && fieldset.matches("fieldset")) {
-                fieldset.append(el);
-              } else {
-                dstEl.append(el);
-              }
+          }
+
+          // Add <tabbed-content> around sections delineated by <h2>.
+          for (let h2 of srcEl.querySelectorAll("h2")) {
+            let id = ("tab-" + h2.innerText.toLocaleLowerCase())
+              .replace(/\./g, "")
+              .replace(/(\s|\p{P}|\p{M}|\p{S}|\p{C})+/gu, "-");
+
+            let tabs = h2
+              .closest("tabbed-container")
+              ?.querySelector("tabbed-tabs");
+            if (tabs) {
+              tabs.append(
+                El({ tag: "a", target: "_self", href: "#" + id }, h2.innerText)
+              );
+            }
+
+            h2.innerText = h2.innerText.replace(
+              /^(\p{Emoji_Presentation}|\p{Extended_Pictographic}\ufe0f)+ /gu,
+              ""
+            );
+
+            let content = wrapEl(h2, El({ tag: "tabbed-content", id }));
+            let header = wrapEl(h2, El("tabbed-content-header"));
+            let body = El("tabbed-content-body");
+            header.insertAdjacentElement("afterend", body);
+
+            for (let el = content.nextSibling; ; el = content.nextSibling) {
+              if (el == null) break;
+              if (el instanceof Element && el.matches("h2")) break;
+
+              body.append(el);
+            }
+          }
+
+          // Add <fieldset> around sections delineated by <h3>.
+          for (let h3 of srcEl.querySelectorAll("h3")) {
+            let fieldset = El("fieldset");
+            h3.insertAdjacentElement("afterend", fieldset);
+            if (h3.innerText.trim().length === 0) {
+              h3.remove();
+            }
+            for (let el = fieldset.nextSibling; ; el = fieldset.nextSibling) {
+              if (el == null) break;
+              if (el instanceof Element && el.matches("h3")) break;
+
+              fieldset.append(el);
             }
           }
         }
 
         // Insert into `md`.
-        while (dstEl.childElementCount > 0) {
-          md.insertAdjacentElement("afterend", dstEl.lastElementChild);
-        }
+        unwrapEl(srcEl);
       }
 
       for (let md of document.querySelectorAll(`[type=markdown]`)) {
         processMd(md);
       }
+
+      for (let el of document.querySelectorAll("tabbed-contents")) {
+        el.setAttribute("scroll-top-positive", "" + (el.scrollTop > 0));
+        el.addEventListener("scroll", (e) => {
+          el.setAttribute("scroll-top-positive", "" + (el.scrollTop > 0));
+        });
+      }
+
+      if (location.hash) {
+        setTimeout(() => {
+          let hash = location.hash;
+          location.hash = "";
+          location.hash = hash;
+        }, 100);
+      }
+
+      window.addEventListener("hashchange", (e) => {
+        for (let a of document.querySelectorAll(`[href]`)) {
+          a.removeAttribute("selected");
+        }
+        for (let a of document.querySelectorAll(`[href="${location.hash}"]`)) {
+          a.setAttribute("selected", "");
+        }
+      });
     </script>
   </body>
 </html>

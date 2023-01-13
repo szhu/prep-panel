@@ -7,11 +7,11 @@ computer**.
 The panel framework can be used on any OS. The prep scripts in this repo are for
 setting up a Mac to my personal preferences.
 
-<img width="687" alt="Screenshot" src="https://user-images.githubusercontent.com/1570168/180943475-97b281b0-d0b5-4a4b-b579-875bbb0d7124.png">
+<img width="915" alt="Screenshot" src="https://user-images.githubusercontent.com/1570168/212285677-8c15cd5e-3995-4ed7-9d69-90a5c0bdb59c.png">
 
 <details><summary>View full panel screenshot</summary>
 
-<img width="552" src="https://user-images.githubusercontent.com/1570168/212200068-5441bcd1-e47d-4584-9eb7-ca3bdfa6ca39.png">
+<img width="780.5" src="https://user-images.githubusercontent.com/1570168/212285688-c284ad85-3026-4689-8e06-73775342c6ba.png">
 
 </details>
 
