@@ -114,6 +114,8 @@
   defaults write "NSGlobalDomain" "AppleAccentColor" -int 4
   ```
 
+##
+
 ## 🔔 Notifications
 
 ###
@@ -153,6 +155,8 @@
   ```sh
   open "x-apple.systempreferences:com.apple.preference.security?FDE"
   ```
+
+##
 
 ## ⌨️ Keyboard, Trackpad, Mouse
 
@@ -475,6 +479,8 @@ To log all existing shortcuts:
   # https://zameermanji.com/blog/2021/6/8/applying-com-apple-symbolichotkeys-changes-instantaneously/
   /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
   ```
+
+##
 
 ## 🔨 Developer
 

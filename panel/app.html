@@ -15,16 +15,18 @@
         --fieldset-background: #e8e8e9;
         --border: #dbdbdb;
         --divider: #dbdbdb;
+        --selected-item: #3e92fc;
       }
 
       @media (prefers-color-scheme: dark) {
         :root {
-          --background: #202020;
+          --background: #252526;
           --text-dim: gray;
-          --fieldset-background: #222222;
+          --fieldset-background: #262626;
           --border: #2f2f2f;
           --divider: #252525;
           --text: #d6d6d6;
+          --selected-item: #144fae;
         }
       }
 
@@ -54,20 +56,25 @@
 
       tabbed-tabs > a {
         display: block;
+
         text-decoration: unset;
+        color: unset;
+        font: 13px -apple-system;
         cursor: default;
+
         padding: 4px 8px;
-        line-height: 24px;
+        line-height: 20px;
         background: var(--fieldset-background);
         border-radius: 6px;
       }
 
       tabbed-tabs a[selected] {
-        filter: brightness(0.9);
+        color: white;
+        background: var(--selected-item);
       }
 
       tabbed-tabs > a:active {
-        filter: brightness(0.8);
+        /* filter: brightness(0.8); */
       }
 
       tabbed-contents {
@@ -117,14 +124,14 @@
         margin: 0;
         padding: 12px 36px;
         font: bold 16px -apple-system;
-        color: #1b1b1b;
+        opacity: 0.95;
       }
 
       h3 {
         margin: 0;
         padding: 12px;
         font: bold 14px -apple-system;
-        color: #1b1b1b;
+        opacity: 0.95;
 
         /* position: sticky; */
         z-index: 1;
@@ -349,7 +356,9 @@
 
         let el = document.createElement(tag || "div");
         for (let key in attributes) {
-          el.setAttribute(key, attributes[key]);
+          if (attributes[key] != null) {
+            el.setAttribute(key, attributes[key]);
+          }
         }
         for (let child of children) {
           if (typeof child === "string") {
@@ -625,7 +634,14 @@
               ?.querySelector("tabbed-tabs");
             if (tabs) {
               tabs.append(
-                El({ tag: "a", target: "_self", href: "#" + id }, h2.innerText)
+                El(
+                  {
+                    tag: "a",
+                    target: "_self",
+                    href: h2.innerText.trim().length > 0 ? "#" + id : undefined,
+                  },
+                  h2.innerText
+                )
               );
             }
 
