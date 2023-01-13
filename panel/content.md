@@ -199,33 +199,7 @@
 
 ##
 
-## ⌨️ Keyboard, Trackpad, Mouse
-
-### Trackpad
-
-- Use light click strength
-
-  ```sh
-  open "/System/Library/PreferencePanes/Trackpad.prefPane"
-  ```
-
-- Turn off force touch
-
-  ```sh
-  defaults write "NSGlobalDomain" "com.apple.trackpad.forceClick" -int 0
-  ```
-
-- ```sh
-  brew install --cask "middleclick" # Middleclick (triple-tap to middle-click)
-  open "/Applications/MiddleClick.app"
-  ```
-
-### Mouse
-
-- ```sh
-  brew install --cask "mos" # Mos (smooth scrolling)
-  open "/Applications/Mos.app"
-  ```
+## ⌨️ Keyboard & Text
 
 ### Keyboard
 
@@ -468,24 +442,46 @@ To log all existing shortcuts:
   defaults delete "NSGlobalDomain" "NSUserKeyEquivalents"
   ```
 
-## ✨ Trackpad & Mouse Gestures
+## 🖱️ Trackpad & Mouse
 
-###
+### Trackpad
+
+- Use light click strength…
+
+  ```sh
+  open "/System/Library/PreferencePanes/Trackpad.prefPane"
+  ```
+
+- Turn off force touch
+
+  ```sh
+  defaults write "NSGlobalDomain" "com.apple.trackpad.forceClick" -int 0
+  ```
+
+- ```sh
+  brew install --cask "middleclick" # MiddleClick (triple-tap to middle-click)
+  open "/Applications/MiddleClick.app"
+  ```
+
+### Mouse
+
+- ```sh
+  brew install --cask "mos" # Mos (smooth scrolling)
+  open "/Applications/Mos.app"
+  ```
+
+### Shortcuts
 
 - Quick Note in left corner
 
-###
-
-- <kbd>^$</kbd>-click anywhere in a window to move it
+- <kbd>^$</kbd> click anywhere in a window to move it
   [[?]](https://apple.stackexchange.com/a/365860)
 
   ```sh
   defaults write "NSGlobalDomain" "NSWindowShouldDragOnGesture" -bool YES
   ```
 
-###
-
-- <kbd>^</kbd>-Right-click for Mission Control
+- <kbd>^</kbd> right click for Mission Control
 
   ```sh
   defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add \
@@ -571,17 +567,17 @@ To log all existing shortcuts:
 - Configure display name globally
 
   ```sh
-  git config --global user.name "$(id -F)"
+  git config --global "user.name" "$(id -F)"
   ```
 
 - Change default branch name to `main`
 
   ```sh
-  git config --global init.defaultBranch main
+  git config --global "init.defaultBranch" main
   ```
 
 - ```sh
-  brew install --cask gitup # GitUp
+  brew install --cask gitup # GitUp (a native, lightweight Git GUI)
   ```
 
 - ```sh
@@ -623,12 +619,40 @@ To log all existing shortcuts:
   brew install --cask "google-chrome" # Google Chrome
   ```
 
+  - <button>Open</button>
+
+    ```sh
+    open "/Applications/Google Chrome.app"
+    ```
+
 - ```sh
   brew install --cask "zoom" # Zoom
   ```
+
+  - <button>Open</button>
+
+    ```sh
+    open "/Applications/Zoom.app"
+    ```
+
+- ```sh
+  brew install --cask "tandem" # Tandem
+  ```
+
+  - <button>Open</button>
+
+    ```sh
+    open "/Applications/Tandem.app"
+    ```
 
 ### Play
 
 - ```sh
   brew install --cask "spotify" # Spotify
   ```
+
+  - <button>Open</button>
+
+    ```sh
+    open "/Applications/Spotify.app"
+    ```

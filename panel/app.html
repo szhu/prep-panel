@@ -205,6 +205,11 @@
 
       a {
         color: initial;
+        text-decoration: unset;
+      }
+
+      section a:hover {
+        text-decoration: underline;
       }
 
       input[type="checkbox"] {
@@ -439,8 +444,6 @@
               );
               if (m) {
                 let [, domain, key] = m;
-                // let pre = el.querySelector("pre");
-                // if (pre && pre.innerText.startsWith("defaults write")) {
                 el.append(
                   El(
                     "section",
@@ -448,6 +451,25 @@
                       "p",
                       El({ tag: "button", type: "button" }, "Reset"),
                       El("pre", `defaults delete ${domain} ${key}`)
+                    )
+                  )
+                );
+                continue;
+              }
+            }
+
+            // Add "Reset" button to `git config --global` commands.
+            {
+              let m = lines[0].match(/^git config --global ([^ \n]+) /);
+              if (m) {
+                let [, key] = m;
+                el.append(
+                  El(
+                    "section",
+                    El(
+                      "p",
+                      El({ tag: "button", type: "button" }, "Reset"),
+                      El("pre", `git config --global --unset ${key}`)
                     )
                   )
                 );
