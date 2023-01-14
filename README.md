@@ -1,6 +1,6 @@
-# MacPrepPanel
+# Prep Panel
 
-MacPrepPanel is a **portable**, **forkable**, **Markdown-based** settings panel
+Prep Panel is a **portable**, **forkable**, **Markdown-based** settings panel
 for **changing hidden settings** or for **interactively provisioning a new
 computer**.
 
@@ -19,10 +19,10 @@ setting up a Mac to my personal preferences.
 
 ## What's it for?
 
-MacPrepPanel was originally built for two main use cases:
+Prep Panel was originally built for two main use cases:
 
 **Hidden settings manager.**\
-Use MacPrepPanel as a quick way to change hidden settings. It is inspired by these
+Use Prep Panel as a quick way to change hidden settings. It is inspired by these
 tools, most of which I have used before:
 
 - [TinkerTool],
@@ -36,7 +36,7 @@ tools, most of which I have used before:
 [hidden settings preference pane]: https://hasseg.org/hiddenSettingsPref/
 
 **Interactive provisioning.**\
-Use MacPrepPanel as a quick way to apply your preferences to a new computer or user
+Use Prep Panel as a quick way to apply your preferences to a new computer or user
 account. This use case is similar to bootstrapping scripts and tools like [Vagrant]
 and [Brewfiles].
 
