@@ -290,7 +290,26 @@ To log all existing shortcuts:
   ## For Finder:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Go\033Back" '"@$s"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Go\033Forward" '"@$d"';
+  ```
 
+- Figma-inspired sidebar shortcut
+
+  ```sh
+  Safari="com.apple.Safari"
+  Calendar="com.apple.iCal"
+
+  ## For most applications:
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Sidebar" '"@\\"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Show Sidebar" '"@\\"';
+  ##
+  ## For Calendar:
+  defaults write "$Calendar" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Calendar List" '"@\\"';
+  defaults write "$Calendar" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Notifications" '"@\\"';
+  defaults write "$Calendar" "NSUserKeyEquivalents" -dict-add "\033View\033Show Calendar List" '"@\\"';
+  ##
+  ## For Keynote, Numbers, and Pages:
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Inspector\033Hide Inspector" '"@\\\\"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Inspector\033Show Inspector" '"@\\\\"';
   ```
 
 - Merge Windows
@@ -370,23 +389,59 @@ To log all existing shortcuts:
   defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Edit\033Undo Close Tab" '"@$t"';
   defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033View\033Always Show Toolbar in Full Screen" '"@$f"';
   ##
-  # For some reason, if this is set to @\, it becomes $@\.
-  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Sidebar" '"^\\"';
-  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033View\033Show Sidebar" '"^\\"';
-  ##
   # defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Window\033Go to Next Tab Group" '"@~$\\U0093"';
   # defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Window\033Go to Previous Tab Group" '"@~$\\U0091"';
   defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Window\033Pin Tab" '"@p"';
   defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Window\033Unpin Tab" '"@p"';
   defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033File\033Print…" '"@$p"';
   ##
-  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Develop\033Show Snippet Editor" '"@~\\U21a9"';
+  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Window\033Duplicate Tab" '"@~u"';
+  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Window\033Move Tab to New Window" '"@~n"';
+  ##
+  defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Develop\033Show Snippet Editor" '"@~$↩"';
   ```
+
+  - Changes will be applied after Safari is relaunched. <button>Relaunch
+    Now</button>
+
+    ```sh
+    osascript -e 'quit app id "com.apple.Safari"'
+    sleep 0.5
+    open -b "com.apple.Safari"
+    ```
 
   - <button>Remove all Safari shortcuts</button>
 
     ```sh
     defaults delete "com.apple.Safari" "NSUserKeyEquivalents"
+    ```
+
+- Freeform
+
+  ```sh
+  Freeform="com.apple.freeform"
+
+  defaults write "$Freeform" "NSUserKeyEquivalents" -dict-add "\033Insert\033Sticky Note" '"@Y"';
+  defaults write "$Freeform" "NSUserKeyEquivalents" -dict-add "\033Insert\033Shape\033Rectangle" '"@R"';
+  defaults write "$Freeform" "NSUserKeyEquivalents" -dict-add "\033Insert\033Shape\033Oval" '"@O"';
+  defaults write "$Freeform" "NSUserKeyEquivalents" -dict-add "\033Insert\033Text Box" '"@T"';
+  defaults write "$Freeform" "NSUserKeyEquivalents" -dict-add "\033Insert\033Line" '"@L"';
+  defaults write "$Freeform" "NSUserKeyEquivalents" -dict-add "\033Insert\033Connection Line" '"@$L"';
+  ```
+
+  - Changes will be applied after Freeform is relaunched. <button>Relaunch
+    Now</button>
+
+    ```sh
+    osascript -e 'quit app id "com.apple.freeform"'
+    sleep 0.5
+    open -b "com.apple.freeform"
+    ```
+
+  - <button>Remove all Freeform shortcuts</button>
+
+    ```sh
+    defaults delete "com.apple.freeform" "NSUserKeyEquivalents"
     ```
 
 - Keynote, Numbers, Pages
@@ -408,9 +463,6 @@ To log all existing shortcuts:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Insert\033Shape\033Rectangle" '"@r"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Insert\033Shape\033Rounded Rectangle" '"@$r"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Insert\033Text Box" '"@↩"';
-  ##
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Inspector\033Hide Inspector" '"@\\\\"';
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Inspector\033Show Inspector" '"@\\\\"';
   ##
   Keynote="com.apple.iWork.Keynote"
   defaults write "$Keynote" "NSUserKeyEquivalents" -dict-add "\033View\033Navigator" "@1";
