@@ -57,8 +57,8 @@ async function handleRequest(request): Response {
       });
     }
 
-    if (request.method === "GET" && requestPath === "/content.md") {
-      let html = await Deno.readTextFile("panel/content.md");
+    if (request.method === "GET" && requestPath.endsWith(".md")) {
+      let html = await Deno.readTextFile("panel" + requestPath);
       return new Response(html, {
         headers: { "content-type": "text/markdown" },
       });
