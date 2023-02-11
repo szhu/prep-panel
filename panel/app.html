@@ -715,33 +715,37 @@
         unwrapEl(srcEl);
       }
 
-      for (let md of document.querySelectorAll(`[type=markdown]`)) {
-        processMd(md);
-      }
+      async function main() {
+        for (let md of document.querySelectorAll(`[type=markdown]`)) {
+          await processMd(md);
+        }
 
-      for (let el of document.querySelectorAll("tabbed-contents")) {
-        el.setAttribute("scroll-top-positive", "" + (el.scrollTop > 0));
-        el.addEventListener("scroll", (e) => {
+        for (let el of document.querySelectorAll("tabbed-contents")) {
           el.setAttribute("scroll-top-positive", "" + (el.scrollTop > 0));
-        });
-      }
+          el.addEventListener("scroll", (e) => {
+            el.setAttribute("scroll-top-positive", "" + (el.scrollTop > 0));
+          });
+        }
 
-      if (location.hash) {
-        setTimeout(() => {
+        if (location.hash) {
           let hash = location.hash;
           location.hash = "";
           location.hash = hash;
-        }, 100);
+        }
+
+        window.addEventListener("hashchange", (e) => {
+          for (let a of document.querySelectorAll(`[href]`)) {
+            a.removeAttribute("selected");
+          }
+          for (let a of document.querySelectorAll(
+            `[href="${location.hash}"]`
+          )) {
+            a.setAttribute("selected", "");
+          }
+        });
       }
 
-      window.addEventListener("hashchange", (e) => {
-        for (let a of document.querySelectorAll(`[href]`)) {
-          a.removeAttribute("selected");
-        }
-        for (let a of document.querySelectorAll(`[href="${location.hash}"]`)) {
-          a.setAttribute("selected", "");
-        }
-      });
+      main();
     </script>
   </body>
 </html>
