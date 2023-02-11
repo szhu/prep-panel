@@ -92,16 +92,22 @@
 
 ### Dock
 
+- Don't show when cursor is at edge of screen
+
+  ```sh
+  defaults write "com.apple.dock" "autohide-delay" -float 10000000000
+  ```
+
 - Remove all applications
 
   ```sh
-  defaults delete "com.apple.Dock" "persistent-apps"
+  defaults delete "com.apple.dock" "persistent-apps"
   ```
 
 - Don't show recents
 
   ```sh
-  defaults write "com.apple.Dock" "show-recents" -bool NO
+  defaults write "com.apple.dock" "show-recents" -bool NO
   ```
 
 ###
@@ -110,7 +116,7 @@
   Now</button>
 
   ```sh
-  osascript -e 'quit app id "com.apple.Dock"'
+  osascript -e 'quit app id "com.apple.dock"'
   ```
 
 ### Menu bar
@@ -345,7 +351,7 @@ To log all existing shortcuts:
   ##
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Revert" "~^↓";
   # defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Zoom All" '"~^$↑"';
-  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Zoom" '"~^↑"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Zoom" '"~^↓"';
   ```
 
 - Window tiling shortcuts (logical)
@@ -475,6 +481,22 @@ To log all existing shortcuts:
 
     ```sh
     defaults delete "com.apple.iWork.Keynote" "NSUserKeyEquivalents"
+    ```
+
+- Shortcuts
+
+  ```sh
+  Shortcuts="com.apple.shortcuts"
+
+  defaults write "$Shortcuts" "NSUserKeyEquivalents" -dict-add "\033Edit\033Comment" "@/";
+  defaults write "$Shortcuts" "NSUserKeyEquivalents" -dict-add "\033Edit\033Move Up" "~↑";
+  defaults write "$Shortcuts" "NSUserKeyEquivalents" -dict-add "\033Edit\033Move Down" "~↓";
+  ```
+
+  - <button>Remove All Shortcuts Shortcuts</button>
+
+    ```sh
+    defaults delete "com.apple.shortcuts" "NSUserKeyEquivalents"
     ```
 
 ###
@@ -675,6 +697,16 @@ To log all existing shortcuts:
 
     ```sh
     open "/Applications/Google Chrome.app"
+    ```
+
+- ```sh
+  brew install --cask "arc" # Arc
+  ```
+
+  - <button>Open</button>
+
+    ```sh
+    open "/Applications/Arc.app"
     ```
 
 - ```sh

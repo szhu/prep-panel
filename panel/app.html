@@ -440,7 +440,7 @@
             // Add "Reset" button to `defaults write` commands.
             {
               let m = lines[0].match(
-                /^defaults write ([^ \n]+) ([^ \n]+) -(bool|int)* /
+                /^defaults write ([^ \n]+) ([^ \n]+) -(bool|int|float)* /
               );
               if (m) {
                 let [, domain, key] = m;

@@ -26,10 +26,12 @@ Use Prep Panel as a quick way to change hidden settings. It is inspired by these
 tools, most of which I have used before:
 
 - [TinkerTool],
+- [macos-defaults.com]
 - [defaults-write.com]
 - [Secrets] (discontinued)
 - [Hidden Settings Preference Pane] (discontinued).
 
+[macos-defaults.com]: https://macos-defaults.com/
 [tinkertool]: https://www.bresink.com/osx/TinkerTool.html
 [secrets]: https://code.google.com/p/blacktree-secrets/
 [defaults-write.com]: http://defaults-write.com/
