@@ -110,6 +110,12 @@
   defaults write "com.apple.dock" "show-recents" -bool NO
   ```
 
+- Scroll to open
+
+  ```sh
+  defaults write "com.apple.dock" "scroll-to-open" -bool YES
+  ```
+
 ###
 
 - Changes will be applied after Dock is relaunched. <button>Relaunch
@@ -386,6 +392,20 @@ To log all existing shortcuts:
     defaults delete "com.apple.Finder" "NSUserKeyEquivalents"
     ```
 
+- Calendar
+
+  ```sh
+  Calendar="com.apple.iCal"
+
+  defaults write "$Calendar" "NSUserKeyEquivalents" -dict-add "\033View\033Show Declined Events" '"@$."';
+  ```
+
+  - <button>Remove All Calendar Shortcuts</button>
+
+    ```sh
+    defaults delete "com.apple.Calendar" "NSUserKeyEquivalents"
+    ```
+
 - Safari
 
   ```sh
@@ -630,6 +650,16 @@ To log all existing shortcuts:
   brew install node
   ```
 
+- Use Touch ID for `sudo`
+
+  ```sh
+  code /etc/pam.d/sudo
+  ```
+
+  Add the following line to the beginning of the file:
+
+  <code style="user-select: all;">auth sufficient pam_tid.so</code>
+
 ### Apple Terminal
 
 - useOptionAsMetaKey
@@ -658,7 +688,7 @@ To log all existing shortcuts:
   brew install gh
   ```
 
-  - <button>Log In To `gh`…</button>
+  - <button>Log in to `gh`…</button>
 
     ```sh
     open_terminal
