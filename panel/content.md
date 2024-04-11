@@ -305,9 +305,23 @@ To log all existing shortcuts:
   ## Prevent another Safari shortcut from overriding it:
   defaults write "$Safari" "NSUserKeyEquivalents" -dict-add "\033Bookmarks\033Bookmark All Tabs…" '"@~$d"';
   ##
-  ## For Finder:
+  ## For Finder and PWAs:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Go\033Back" '"@$s"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Go\033Forward" '"@$d"';
+  ##
+  ## For Spotify:
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Go Back" '"@$s"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Go Forward" '"@$d"';
+  ```
+
+- Unified reload shortcuts
+
+  ```sh
+  ## For Safari and PWAs:
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Reload Page" '"@$r"';
+  ##
+  ## For Chromium browsers:
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Reload This Page" '"@$r"';
   ```
 
 - Figma-inspired sidebar shortcut
@@ -525,6 +539,20 @@ To log all existing shortcuts:
 
     ```sh
     defaults delete "com.apple.shortcuts" "NSUserKeyEquivalents"
+    ```
+
+- Arc
+
+  ```sh
+  Arc="company.thebrowser.Browser"
+
+  defaults write "$Arc" "NSUserKeyEquivalents" -dict-add "\033Extensions\033Manage Extensions…" '"@$e"';
+  ```
+
+  - <button>Remove All Arc Shortcuts</button>
+
+    ```sh
+    defaults delete "company.thebrowser.Browser" "NSUserKeyEquivalents"
     ```
 
 ###
