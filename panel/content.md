@@ -267,6 +267,12 @@ To log all existing shortcuts:
 
 ### All Applications
 
+- File Menu
+
+  ```sh
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033File\033Share…" '"@$e"';
+  ```
+
 - Edit Menu
 
   ```sh
@@ -495,6 +501,8 @@ To log all existing shortcuts:
   defaults write "$Keynote" "NSUserKeyEquivalents" -dict-add "\033View\033Slide Only" "@2";
   defaults write "$Keynote" "NSUserKeyEquivalents" -dict-add "\033View\033Light Table" "@3";
   defaults write "$Keynote" "NSUserKeyEquivalents" -dict-add "\033View\033Outline" "@4";
+  defaults write "$Keynote" "NSUserKeyEquivalents" -dict-add "\033View\033Edit Slide Layouts" "@~L";
+  defaults write "$Keynote" "NSUserKeyEquivalents" -dict-add "\033View\033Exit Slide Layouts" "@~L";
   ```
 
   - <button>Remove All Keynote Shortcuts</button>
@@ -568,12 +576,14 @@ To log all existing shortcuts:
 
 - Quick Note in left corner
 
-- <kbd>^$</kbd> click anywhere in a window to move it
+- <kbd>^@</kbd> click anywhere in a window to move it
   [[?]](https://apple.stackexchange.com/a/365860)
 
   ```sh
   defaults write "NSGlobalDomain" "NSWindowShouldDragOnGesture" -bool YES
   ```
+
+  Unfortunately, this seems to no longer work in Sonoma.
 
 - <kbd>^</kbd> right click for Mission Control
 
