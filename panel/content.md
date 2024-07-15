@@ -329,6 +329,7 @@ To log all existing shortcuts:
   ```sh
   Safari="com.apple.Safari"
   Calendar="com.apple.iCal"
+  Notes="com.apple.Notes"
 
   ## For most applications:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Sidebar" '"@\\"';
@@ -342,6 +343,10 @@ To log all existing shortcuts:
   ## For Keynote, Numbers, and Pages:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Inspector\033Hide Inspector" '"@\\\\"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Inspector\033Show Inspector" '"@\\\\"';
+  ##
+  ## For Notes:
+  defaults write "$Notes" "NSUserKeyEquivalents" -dict-add "\033View\033Show Folders" '"@\\\\"';
+  defaults write "$Notes" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Folders" '"@\\\\"';
   ```
 
 - Merge Windows
@@ -351,6 +356,23 @@ To log all existing shortcuts:
   ```
 
 ### Window Tiling
+
+- Window tiling shortcuts (macOS 15)
+
+  ```sh
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move & Resize\033Left" '"~^←"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move & Resize\033Right" '"~^→"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move & Resize\033Top" '"~^↑"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move & Resize\033Bottom" '"~^↓"';
+  ##
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move & Resize\033Top Left" '"~^["';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move & Resize\033Top Right" '"~^]"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move & Resize\033Bottom Left" '"~^;"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Move & Resize\033Bottom Right" "~^'";
+  ##
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Fill" '"~^↩"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Window\033Center" '"^$↩"';
+  ```
 
 - Window tiling shortcuts (directional, using regular keys)
 
@@ -547,7 +569,10 @@ To log all existing shortcuts:
   Arc="company.thebrowser.Browser"
 
   defaults write "$Arc" "NSUserKeyEquivalents" -dict-add "\033Extensions\033Manage Extensions…" '"@$e"';
+  defaults write "$Arc" "NSUserKeyEquivalents" -dict-add "\033File\033Share…" '"@~$e"';
   ```
+
+  <!-- defaults write "$Arc" "NSUserKeyEquivalents" -dict-add "\033Edit\033Undo Archive Tab" '"@$t"'; -->
 
   - <button>Remove All Arc Shortcuts</button>
 
