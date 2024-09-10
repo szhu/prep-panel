@@ -312,6 +312,10 @@ To log all existing shortcuts:
   ## For Spotify:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Go Back" '"@$s"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Go Forward" '"@$d"';
+  ##
+  ## For Arc:
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Archive\033Go Back" '"@$s"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Archive\033Go Forward" '"@$d"';
   ```
 
 - Unified reload shortcuts
@@ -570,6 +574,9 @@ To log all existing shortcuts:
 
   defaults write "$Arc" "NSUserKeyEquivalents" -dict-add "\033Extensions\033Manage Extensions…" '"@$e"';
   defaults write "$Arc" "NSUserKeyEquivalents" -dict-add "\033File\033Share…" '"@~$e"';
+  ##
+  defaults write "$Arc" "NSUserKeyEquivalents" -dict-add "\033Edit\033Undo" '"@~z"';
+  defaults write "$Arc" "NSUserKeyEquivalents" -dict-add "\033Edit\033Undo Move Items out of split" '"@~z"';
   ```
 
   <!-- defaults write "$Arc" "NSUserKeyEquivalents" -dict-add "\033Edit\033Undo Archive Tab" '"@$t"'; -->
