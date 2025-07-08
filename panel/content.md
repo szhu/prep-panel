@@ -316,6 +316,14 @@ To log all existing shortcuts:
   ## For Arc:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Archive\033Go Back" '"@$s"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Archive\033Go Forward" '"@$d"';
+  ##
+  ## For Dia:
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Tabs\033Go Back" '"@$s"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Tabs\033Go Forward" '"@$d"';
+  ##
+  ## For System Settings:
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Back" '"@$s"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Forward" '"@$d"';
   ```
 
 - Unified reload shortcuts
@@ -334,10 +342,12 @@ To log all existing shortcuts:
   Safari="com.apple.Safari"
   Calendar="com.apple.iCal"
   Notes="com.apple.Notes"
+  Dia="company.thebrowser.dia"
 
   ## For most applications:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Sidebar" '"@\\"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Show Sidebar" '"@\\"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Toggle Sidebar" '"@\\"';
   ##
   ## For Calendar:
   defaults write "$Calendar" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Calendar List" '"@\\"';
@@ -351,6 +361,9 @@ To log all existing shortcuts:
   ## For Notes:
   defaults write "$Notes" "NSUserKeyEquivalents" -dict-add "\033View\033Show Folders" '"@\\\\"';
   defaults write "$Notes" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Folders" '"@\\\\"';
+  ##
+  ## For Dia:
+  defaults write "$Dia" "NSUserKeyEquivalents" -dict-add "\033View\033Show Tabs in Sidebar" '"@\\\\"';
   ```
 
 - Merge Windows
@@ -549,6 +562,26 @@ To log all existing shortcuts:
 
     ```sh
     defaults delete "com.apple.iWork.Keynote" "NSUserKeyEquivalents"
+    ```
+
+- Notes
+
+  ```sh
+  Notes="com.apple.Notes"
+
+  defaults write "$Notes" "NSUserKeyEquivalents" -dict-add "\033Format\033Move Item\033Up" '"~↑"';
+  defaults write "$Notes" "NSUserKeyEquivalents" -dict-add "\033Format\033Move Item\033Down" '"~↓"';
+  defaults write "$Notes" "NSUserKeyEquivalents" -dict-add "\033Window\033Open Note in New Window" '"@O"';
+  defaults write "$Notes" "NSUserKeyEquivalents" -dict-add "\033Format\033Mark as Checked" "@'";
+  defaults write "$Notes" "NSUserKeyEquivalents" -dict-add "\033Format\033Mark as Unchecked" "@'";
+  defaults write "$Notes" "NSUserKeyEquivalents" -dict-add "\033Format\033Block Quote" "@$'";
+  defaults write "$Notes" "NSUserKeyEquivalents" -dict-add "\033Format\033Checklist" "@L";
+  ```
+
+  - <button>Remove All Notes Shortcuts</button>
+
+    ```sh
+    defaults delete "com.apple.Notes" "NSUserKeyEquivalents"
     ```
 
 - Shortcuts
