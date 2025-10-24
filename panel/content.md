@@ -321,6 +321,10 @@ To log all existing shortcuts:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Tabs\033Go Back" '"@$s"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033Tabs\033Go Forward" '"@$d"';
   ##
+  ## For ChatGPT Atlas:
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033History\033Go Back" '"@$s"';
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033History\033Go Forward" '"@$d"';
+  ##
   ## For System Settings:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Back" '"@$s"';
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Forward" '"@$d"';
@@ -334,6 +338,9 @@ To log all existing shortcuts:
   ##
   ## For Chromium browsers:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Reload This Page" '"@$r"';
+  ##
+  ## For ChatGPT Atlas:
+  defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Reload Tab" '"@$r"';
   ```
 
 - Figma-inspired sidebar shortcut
@@ -343,6 +350,7 @@ To log all existing shortcuts:
   Calendar="com.apple.iCal"
   Notes="com.apple.Notes"
   Dia="company.thebrowser.dia"
+  Atlas="com.openai.atlas"
 
   ## For most applications:
   defaults write "NSGlobalDomain" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Sidebar" '"@\\"';
@@ -364,6 +372,12 @@ To log all existing shortcuts:
   ##
   ## For Dia:
   defaults write "$Dia" "NSUserKeyEquivalents" -dict-add "\033View\033Show Tabs in Sidebar" '"@\\\\"';
+  ##
+  ## For ChatGPT Atlas:
+  defaults write "$Atlas" "NSUserKeyEquivalents" -dict-add "\033View\033Show Chat History Sidebar" '"@\\\\"';
+  defaults write "$Atlas" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Chat History Sidebar" '"@\\\\"';
+  defaults write "$Atlas" "NSUserKeyEquivalents" -dict-add "\033View\033Show Web Chat Sidebar" '"@/"';
+  defaults write "$Atlas" "NSUserKeyEquivalents" -dict-add "\033View\033Hide Web Chat Sidebar" '"@/"';
   ```
 
 - Merge Windows
